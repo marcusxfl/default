@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The BBZ Codex — Restricted Archives</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Special+Elite&family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:       #1a0f08;
+    --parch:     #d9c39a;
+    --parch-dk:  #a58a5c;
+    --brown:     #3d2611;
+    --brown-dk:  #22160a;
+    --brown-lt:  #5a381a;
+    --blood:     #6a1414;
+    --rust:      #8a4a1a;
+    --bone:      #ded1b0;
+    --ember:     #d9a24a;
+    --shadow:    rgba(0,0,0,.85);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: #0a0603;
+    color: var(--parch);
+    font-family: 'IM Fell English', 'Cormorant Garamond', Georgia, serif;
+    min-height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse at 50% 20%, #1c0f05 0%, #060302 70%, #000 100%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.008) 0 1px, transparent 1px 3px);
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+    position: relative;
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><circle cx='12' cy='12' r='2' fill='%23d9a24a'/><circle cx='12' cy='12' r='6' fill='none' stroke='%23d9a24a' stroke-width='.5' opacity='.6'/></svg>") 12 12, auto;
+  }
+
+  /* dust overlay */
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(217,163,74,.28), transparent 50%),
+      radial-gradient(1px 1px at 70% 60%, rgba(217,163,74,.18), transparent 50%),
+      radial-gradient(2px 2px at 40% 80%, rgba(200,150,90,.15), transparent 60%),
+      radial-gradient(1px 1px at 85% 15%, rgba(217,163,74,.20), transparent 50%),
+      radial-gradient(1px 1px at 10% 70%, rgba(217,163,74,.15), transparent 50%);
+    background-size: 300px 300px;
+    animation: dustDrift 60s linear infinite;
+    z-index: 1;
+  }
+  @keyframes dustDrift {
+    from { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+    to   { background-position: 300px 200px, -200px 300px, 200px -200px, -100px 100px, 100px -300px; }
+  }
+
+  /* vignette + heavy scratch */
+  body::after {
+    content: "";
+    position: fixed; inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.75) 100%);
+    z-index: 2;
+  }
+
+  header {
+    text-align: center;
+    position: relative;
+    z-index: 3;
+    padding: 20px 0 40px;
+    border-bottom: 1px dashed #3d2611;
+    margin-bottom: 50px;
+  }
+
+  .stamp {
+    display: inline-block;
+    border: 3px double var(--blood);
+    color: var(--blood);
+    padding: 6px 18px;
+    font-family: 'Special Elite', monospace;
+    font-size: 13px;
+    letter-spacing: 4px;
+    transform: rotate(-3deg);
+    margin-bottom: 20px;
+    opacity: .85;
+    text-shadow: 1px 1px 0 rgba(0,0,0,.6);
+  }
+
+  h1 {
+    font-family: 'UnifrakturCook', 'IM Fell English', serif;
+    font-size: clamp(38px, 7vw, 72px);
+    color: var(--ember);
+    letter-spacing: 2px;
+    text-shadow:
+      0 0 20px rgba(217,162,74,.15),
+      2px 2px 0 #000,
+      -1px -1px 0 #000;
+  }
+  h1 .glitch { color: var(--blood); }
+
+  .subtitle {
+    font-style: italic;
+    color: var(--parch-dk);
+    margin-top: 6px;
+    letter-spacing: 3px;
+    font-size: 14px;
+  }
+
+  .counter {
+    margin-top: 14px;
+    font-family: 'Special Elite', monospace;
+    font-size: 12px;
+    color: var(--parch-dk);
+    letter-spacing: 2px;
+  }
+  .counter .num { color: var(--ember); }
+
+  /* shelf */
+  .archive {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 3;
+  }
+
+  .shelf {
+    position: relative;
+    padding: 20px 30px 8px;
+    margin-bottom: 60px;
+    background:
+      linear-gradient(180deg, transparent 0%, transparent 88%, #1a0f06 88%, #22160a 100%);
+    border-bottom: 14px solid #2b1a0a;
+    box-shadow:
+      0 14px 0 #0a0603,
+      0 26px 40px rgba(0,0,0,.9);
+  }
+
+  .shelf::before, .shelf::after {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 14px;
+    width: 8px;
+    background: linear-gradient(180deg, #1a0f06, #0a0603);
+  }
+  .shelf::before { left: 0; }
+  .shelf::after  { right: 0; }
+
+  .shelf-label {
+    font-family: 'Special Elite', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--parch-dk);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    opacity: .6;
+  }
+
+  .row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 6px;
+    min-height: 240px;
+    flex-wrap: wrap;
+  }
+
+  /* --- BOOKS --- */
+  .book {
+    width: 52px;
+    min-height: 200px;
+    background: var(--brown);
+    border: 1px solid #0a0603;
+    border-radius: 2px 2px 3px 3px;
+    position: relative;
+    cursor: pointer;
+    transition: transform .25s, box-shadow .25s, filter .25s;
+    box-shadow:
+      inset 3px 0 0 rgba(0,0,0,.25),
+      inset -3px 0 0 rgba(0,0,0,.4),
+      inset 0 4px 0 rgba(255,255,255,.04),
+      2px 2px 6px rgba(0,0,0,.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: brightness(.95) contrast(1.05);
+  }
+
+  .book:hover {
+    transform: translateY(-14px);
+    filter: brightness(1.1);
+    box-shadow:
+      inset 3px 0 0 rgba(0,0,0,.25),
+      inset -3px 0 0 rgba(0,0,0,.4),
+      2px 6px 20px rgba(217,162,74,.25),
+      2px 2px 6px rgba(0,0,0,.7);
+  }
+
+  .book .spine {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-family: 'IM Fell English', serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--ember);
+    text-transform: uppercase;
+    text-shadow: 1px 0 0 #000;
+    padding: 12px 0;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .book .glyph {
+    position: absolute;
+    top: 8px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    color: var(--ember);
+    opacity: .7;
+  }
+
+  .book .band {
+    position: absolute;
+    left: 0; right: 0;
+    height: 6px;
+    background: repeating-linear-gradient(90deg, #d9a24a 0 4px, transparent 4px 8px);
+    opacity: .45;
+  }
+  .book .band.top    { top: 30px; }
+  .book .band.bottom { bottom: 30px; }
+
+  /* variants */
+  .b-1  { height: 240px; background: #22160a; }
+  .b-2  { height: 220px; background: #3d2611; }
+  .b-3  { height: 260px; background: #4a1a10; }
+  .b-4  { height: 210px; background: #2a1a0d; }
+  .b-5  { height: 250px; background: #33200e; }
+  .b-6  { height: 230px; background: #1a0f06; }
+  .b-7  { height: 270px; background: #4a2a12; width: 60px; }
+  .b-8  { height: 200px; background: #3a1a0a; }
+
+  /* Locked books get sealed look */
+  .book.locked {
+    filter: brightness(.55) saturate(.6);
+  }
+  .book.locked::after {
+    content: "🜏";
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    color: var(--blood);
+    text-shadow: 0 0 8px rgba(106,20,20,.8);
+    background: rgba(0,0,0,.55);
+    width: 34px; height: 34px;
+    border: 1px solid var(--blood);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .book.locked:hover {
+    filter: brightness(.7) saturate(.7);
+  }
+
+  .book.unlocked::before {
+    content: "";
+    position: absolute;
+    top: 4px; right: -3px;
+    width: 6px; height: 6px;
+    background: var(--ember);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--ember);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: .5; }
+    50%      { opacity: 1;  }
+  }
+
+  /* --- SCROLLS --- */
+  .scroll {
+    width: 70px;
+    height: 80px;
+    align-self: flex-end;
+    margin-bottom: 8px;
+    background: linear-gradient(180deg, #7a5a30 0%, #4a3018 50%, #7a5a30 100%);
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+    box-shadow:
+      inset 0 -8px 0 rgba(0,0,0,.35),
+      inset 0 8px 0 rgba(0,0,0,.35),
+      2px 4px 10px rgba(0,0,0,.7);
+    transition: transform .2s;
+  }
+  .scroll:hover { transform: translateY(-6px) rotate(-2deg); }
+  .scroll::before, .scroll::after {
+    content: "";
+    position: absolute; left: 0; right: 0;
+    height: 10px;
+    background: linear-gradient(180deg, #6a4a24, #2a1a0a);
+  }
+  .scroll::before { top: 0; border-radius: 4px 4px 0 0; }
+  .scroll::after  { bottom: 0; border-radius: 0 0 4px 4px; }
+  .scroll .tag {
+    position: absolute;
+    top: 20px; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Special Elite', monospace;
+    font-size: 9px;
+    color: var(--bone);
+    letter-spacing: 1px;
+    text-align: center;
+    width: 90%;
+    line-height: 1.2;
+  }
+  .scroll.locked { filter: brightness(.5) saturate(.5); }
+  .scroll.locked::after {
+    content: "🜏";
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+    color: var(--blood);
+    background: rgba(0,0,0,.6);
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--blood);
+    z-index: 2;
+  }
+
+  /* --- ARTIFACT (game ball) --- */
+  .artifact {
+    width: 90px; height: 90px;
+    align-self: flex-end;
+    margin-bottom: 8px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 35% 30%, #6a2a10 0%, #3d1608 60%, #1a0803 100%);
+    position: relative;
+    cursor: pointer;
+    box-shadow:
+      inset -8px -8px 20px rgba(0,0,0,.6),
+      inset 4px 4px 10px rgba(255,120,50,.1),
+      3px 6px 15px rgba(0,0,0,.8);
+    transition: transform .3s;
+  }
+  .artifact:hover { transform: rotate(15deg) scale(1.05); }
+  .artifact::before {
+    content: "";
+    position: absolute; inset: 8px;
+    border-radius: 50%;
+    background:
+      linear-gradient(0deg, transparent 48%, #1a0803 49%, #1a0803 51%, transparent 52%),
+      linear-gradient(90deg, transparent 48%, #1a0803 49%, #1a0803 51%, transparent 52%),
+      radial-gradient(circle at 50% 50%, transparent 40%, #1a0803 41%, #1a0803 43%, transparent 44%);
+    opacity: .5;
+  }
+  .artifact::after {
+    content: "0";
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'UnifrakturCook', serif;
+    font-size: 36px;
+    color: var(--ember);
+    text-shadow: 0 0 12px rgba(217,162,74,.6);
+    opacity: .7;
+  }
+
+  /* --- SECTION HEADERS --- */
+  .section-title {
+    font-family: 'UnifrakturCook', serif;
+    color: var(--rust);
+    text-align: center;
+    font-size: 24px;
+    letter-spacing: 4px;
+    margin: 20px 0 8px;
+    text-shadow: 1px 1px 0 #000;
+  }
+  .section-sub {
+    text-align: center;
+    color: var(--parch-dk);
+    font-style: italic;
+    font-size: 13px;
+    margin-bottom: 22px;
+    letter-spacing: 1px;
+  }
+
+  /* --- MODAL --- */
+  .veil {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.92);
+    backdrop-filter: blur(2px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+    animation: fadeIn .3s;
+  }
+  .veil.open { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .page {
+    background:
+      radial-gradient(ellipse at top left, #d9c39a 0%, #b89968 50%, #8a6a3a 100%),
+      #b89968;
+    color: var(--ink);
+    max-width: 720px;
+    width: 100%;
+    max-height: 85vh;
+    padding: 50px 55px;
+    border: 2px solid #3d2611;
+    box-shadow:
+      inset 0 0 60px rgba(80,40,10,.4),
+      inset 0 0 200px rgba(0,0,0,.25),
+      0 20px 60px rgba(0,0,0,.9);
+    font-family: 'IM Fell English', serif;
+    font-size: 17px;
+    line-height: 1.75;
+    overflow-y: auto;
+    position: relative;
+    border-radius: 2px;
+  }
+  .page::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(80,40,10,.15) 0, transparent 12%),
+      radial-gradient(circle at 80% 70%, rgba(80,40,10,.2) 0, transparent 10%),
+      radial-gradient(circle at 60% 20%, rgba(0,0,0,.1) 0, transparent 8%),
+      radial-gradient(circle at 30% 85%, rgba(80,40,10,.12) 0, transparent 15%);
+    pointer-events: none;
+  }
+  .page-inner { position: relative; z-index: 1; }
+
+  .page h2 {
+    font-family: 'UnifrakturCook', serif;
+    font-size: 32px;
+    color: var(--blood);
+    text-align: center;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  .page .meta {
+    text-align: center;
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #5a381a;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+  }
+  .page p { margin-bottom: 16px; text-align: justify; }
+  .page p::first-letter {
+    font-family: 'UnifrakturCook', serif;
+    font-size: 36px;
+    float: left;
+    line-height: 1;
+    padding: 4px 8px 0 0;
+    color: var(--blood);
+  }
+  .page p.plain::first-letter {
+    font-size: inherit; float: none; padding: 0; color: inherit; font-family: inherit;
+  }
+  .page .quote {
+    font-style: italic;
+    border-left: 3px solid var(--blood);
+    padding: 6px 14px;
+    margin: 20px 4px;
+    background: rgba(80,40,10,.08);
+    color: #3d2611;
+  }
+  .page .redacted {
+    background: #1a0f08;
+    color: #1a0f08;
+    padding: 0 4px;
+    user-select: all;
+  }
+  .page .redacted:hover { color: var(--parch); }
+
+  .page .cipher {
+    font-family: 'Special Elite', monospace;
+    letter-spacing: 4px;
+    background: rgba(0,0,0,.08);
+    padding: 10px 14px;
+    display: inline-block;
+    margin: 10px 0;
+    color: #22160a;
+    border: 1px dashed #5a381a;
+  }
+
+  .page .margin-note {
+    font-family: 'Special Elite', monospace;
+    font-size: 12px;
+    color: #6a1414;
+    transform: rotate(-2deg);
+    display: inline-block;
+    padding: 4px 8px;
+    margin: 8px 0;
+    border: 1px solid #6a1414;
+    background: rgba(255,240,200,.4);
+  }
+
+  .page .hidden-ink {
+    color: #b89968; /* nearly invisible on parchment */
+    transition: color .3s;
+  }
+  .page .hidden-ink:hover { color: #6a1414; }
+
+  .page .signature {
+    text-align: right;
+    font-family: 'UnifrakturCook', serif;
+    font-size: 22px;
+    color: var(--brown-dk);
+    margin-top: 30px;
+    letter-spacing: 2px;
+  }
+
+  .page hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #5a381a, transparent);
+    margin: 20px 0;
+  }
+
+  .close {
+    position: absolute;
+    top: 12px; right: 16px;
+    background: none;
+    border: 1px solid var(--brown-dk);
+    color: var(--brown-dk);
+    font-family: 'Special Elite', monospace;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 4px 10px;
+    z-index: 3;
+  }
+  .close:hover { background: var(--blood); color: var(--parch); border-color: var(--blood); }
+
+  /* --- LOCK PROMPT --- */
+  .lock-veil {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.95);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 20px;
+  }
+  .lock-veil.open { display: flex; }
+  .lock-box {
+    background: #0f0803;
+    border: 2px solid var(--blood);
+    padding: 40px 34px;
+    max-width: 460px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(106,20,20,.4), inset 0 0 30px rgba(0,0,0,.9);
+  }
+  .lock-box h3 {
+    font-family: 'UnifrakturCook', serif;
+    font-size: 24px;
+    color: var(--blood);
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+  }
+  .lock-box .hint {
+    color: var(--parch-dk);
+    font-style: italic;
+    font-size: 13px;
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+  .lock-box .hint code {
+    font-family: 'Special Elite', monospace;
+    color: var(--ember);
+    letter-spacing: 3px;
+    background: rgba(217,162,74,.08);
+    padding: 2px 6px;
+    border: 1px dashed var(--rust);
+    display: inline-block;
+    margin: 4px 0;
+  }
+  .lock-box input {
+    width: 100%;
+    padding: 12px 14px;
+    background: #1a0f06;
+    border: 1px solid var(--rust);
+    color: var(--ember);
+    font-family: 'Special Elite', monospace;
+    font-size: 16px;
+    letter-spacing: 4px;
+    text-align: center;
+    text-transform: uppercase;
+    outline: none;
+  }
+  .lock-box input:focus { border-color: var(--ember); box-shadow: 0 0 12px rgba(217,162,74,.25); }
+  .lock-box .row-btn {
+    display: flex; gap: 10px; margin-top: 16px;
+  }
+  .lock-box button {
+    flex: 1;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid var(--rust);
+    color: var(--ember);
+    font-family: 'Special Elite', monospace;
+    letter-spacing: 3px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all .2s;
+  }
+  .lock-box button.primary { border-color: var(--ember); }
+  .lock-box button:hover { background: var(--brown); color: var(--parch); }
+  .lock-box .err {
+    color: var(--blood);
+    font-family: 'Special Elite', monospace;
+    font-size: 12px;
+    margin-top: 10px;
+    letter-spacing: 2px;
+    min-height: 18px;
+  }
+  .lock-box .success {
+    color: var(--ember);
+    font-family: 'UnifrakturCook', serif;
+    font-size: 20px;
+    margin-top: 14px;
+    letter-spacing: 3px;
+  }
+
+  /* --- FOOTER --- */
+  footer {
+    margin-top: 60px;
+    padding: 40px 20px 10px;
+    text-align: center;
+    color: #3d2611;
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    position: relative;
+    z-index: 3;
+    border-top: 1px dashed #22160a;
+    line-height: 2;
+  }
+  footer .sigil {
+    font-size: 28px;
+    color: var(--blood);
+    display: block;
+    margin-bottom: 10px;
+    text-shadow: 0 0 12px rgba(106,20,20,.4);
+  }
+  footer .hidden-clue {
+    color: #0f0803;
+    letter-spacing: 4px;
+    transition: color .4s;
+    display: block;
+    margin-top: 20px;
+    user-select: text;
+  }
+  footer .hidden-clue:hover { color: var(--ember); }
+
+  /* --- codex directory buttons --- */
+  .nav {
+    text-align: center;
+    margin-bottom: 30px;
+    z-index: 3;
+    position: relative;
+  }
+  .nav button {
+    background: transparent;
+    border: 1px solid var(--rust);
+    color: var(--ember);
+    font-family: 'Special Elite', monospace;
+    padding: 6px 14px;
+    margin: 0 4px;
+    cursor: pointer;
+    letter-spacing: 2px;
+    font-size: 11px;
+    transition: all .2s;
+  }
+  .nav button:hover { background: var(--brown); color: var(--parch); }
+  .nav button.danger { border-color: var(--blood); color: var(--blood); }
+  .nav button.danger:hover { background: var(--blood); color: var(--parch); }
+
+  /* mobile */
+  @media (max-width: 640px) {
+    .page { padding: 30px 24px; font-size: 15px; }
+    .page h2 { font-size: 24px; }
+    .row { gap: 4px; }
+    .book { width: 42px; }
+    .book .spine { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="stamp">CLASSIFIED — LEAGUE ONLY</div>
+  <h1>The BBZ <span class="glitch">Codex</span></h1>
+  <p class="subtitle">Basketball : Zero &nbsp;·&nbsp; Uncatalogued Incidents</p>
+  <div class="counter">SEALS BROKEN <span class="num" id="unlockCount">0</span> / <span id="unlockTotal">5</span></div>
+</header>
+
+<div class="nav">
+  <button onclick="showAbout()">◆ ABOUT THE ARCHIVE ◆</button>
+  <button class="danger" onclick="resetAll()">✕ RESET ALL SEALS</button>
+</div>
+
+<main class="archive">
+
+  <div class="section-title">— UPPER SHELF —</div>
+  <div class="section-sub">First-hand accounts. The League permitted these.</div>
+  <div class="shelf">
+    <div class="shelf-label">Cabinet I · Section A</div>
+    <div class="row" id="row1">
+      <!-- rendered by JS -->
+    </div>
+  </div>
+
+  <div class="section-title">— LOWER SHELF —</div>
+  <div class="section-sub">These do not officially exist. Read at your own risk.</div>
+  <div class="shelf">
+    <div class="shelf-label">Cabinet I · Section B · <span style="color: var(--blood)">SEALED</span></div>
+    <div class="row" id="row2">
+      <!-- rendered by JS -->
+    </div>
+  </div>
+
+  <div class="section-title">— THE VAULT —</div>
+  <div class="section-sub">One item. It has never been read aloud.</div>
+  <div class="shelf">
+    <div class="shelf-label">Cabinet Ω · <span style="color: var(--blood)">DO NOT DISTURB</span></div>
+    <div class="row" id="row3">
+      <!-- rendered by JS -->
+    </div>
+  </div>
+
+</main>
+
+<!-- READING MODAL -->
+<div class="veil" id="veil" onclick="if(event.target===this) closePage()">
+  <div class="page">
+    <button class="close" onclick="closePage()">CLOSE ✕</button>
+    <div class="page-inner" id="pageInner"></div>
+  </div>
+</div>
+
+<!-- LOCK MODAL -->
+<div class="lock-veil" id="lockVeil" onclick="if(event.target===this) closeLock()">
+  <div class="lock-box">
+    <h3 id="lockTitle">☩ SEALED ☩</h3>
+    <p class="hint" id="lockHint"></p>
+    <input type="text" id="lockInput" maxlength="40" placeholder="ENTER THE KEY" autocomplete="off" onkeydown="if(event.key==='Enter') submitKey()">
+    <div class="row-btn">
+      <button onclick="closeLock()">CANCEL</button>
+      <button class="primary" onclick="submitKey()">SPEAK IT</button>
+    </div>
+    <div class="err" id="lockErr"></div>
+  </div>
+</div>
+
+<footer>
+  <span class="sigil">🜏 ⚸ 🜏</span>
+  ARCHIVE OF THE LEAGUE OF BASKETBALL : ZERO<br>
+  UNOFFICIAL · UNRECORDED · UNSPOKEN<br>
+  <span class="hidden-clue">// last words of coach k. : "the answer is a player and his number" //</span>
+</footer>
+
+<script>
+/* ========================================================================
+   THE BBZ CODEX
+   =====================================================================  */
+
+const ITEMS = [
+
+  // ------ ROW 1 : freely readable ------
+  {
+    id: 'founding', row: 1, kind: 'book', variant: 'b-1',
+    title: 'Vol. I — The Founding',
+    glyph: '♜', locked: false,
+    meta: 'RECOVERED · YEAR 0 · KEEPER UNKNOWN',
+    content: `
+      <h2>The Founding</h2>
+      <div class="meta">Volume One · Year Zero</div>
+      <p>Before the League there was a court. Before the court there was a lot behind the old mill, and before the lot there was, they say, only the sound. A rhythmic thump against packed earth. Bouncing. Bouncing. Bouncing before any hand had learned to bounce.</p>
+      <p class="plain">The first thirteen players signed no contract. There was no ink; there was no paper. There was, instead, a promise made in a circle at midnight, and the promise was this: <em>we will play, and we will keep playing, and the score will not be spoken above a whisper.</em></p>
+      <p>Basketball : Zero was never invented. It was <span class="hidden-ink">discovered like a hole in the world where a game should be</span>. That is what the elder rulebook says, and that is what I say now.</p>
+      <div class="margin-note">— written in the margin, other hand — <br>
+      the bell tolls twice at &nbsp;<b>CHUR &nbsp; KRXU</b>&nbsp; · shift the letters back three · they knew what they meant</div>
+      <p>Twelve of the thirteen are dead. The last one still walks the sideline. He does not wear a number. He does not need one. He is the number.</p>
+      <div class="signature">— The Founder, unnamed</div>
+    `
+  },
+  {
+    id: 'scrawl', row: 1, kind: 'scroll',
+    title: 'LOCKER 13', label: 'FRAG α',
+    glyph: '✎', locked: false,
+    meta: 'FRAGMENT ALPHA · LOCKER ROOM · UNDATED',
+    content: `
+      <h2>Fragment α</h2>
+      <div class="meta">Scratched inside locker no. 13</div>
+      <p class="plain">he wore no name. only a number. the number was low. the number was the lowest.</p>
+      <p class="plain">i saw him lace his shoes in the mirror and the mirror laced them wrong. i saw him take a shot and the ball did not come down for a long, long time.</p>
+      <p class="plain">the coach says we call him <b>PLAYER</b>. only PLAYER. that is all we are permitted.</p>
+      <p class="plain">tomorrow is game 82. i am writing this in case there is not a game 83.</p>
+      <div class="signature">— #24, second string</div>
+    `
+  },
+  {
+    id: 'rulebook', row: 1, kind: 'book', variant: 'b-2',
+    title: 'Vol. II — Rulebook, Amended',
+    glyph: '§', locked: false,
+    meta: 'LEAGUE PUBLICATION · REVISED IN A HAND NOT OUR OWN',
+    content: `
+      <h2>Rulebook, Amended</h2>
+      <div class="meta">Volume Two · The Rules of Play</div>
+      <p>Ⅰ. A game shall consist of four quarters of twelve minutes each. There shall never, under any circumstance, be a fifth quarter.</p>
+      <p class="plain">Ⅱ. The court shall be measured in ninety-four feet by fifty. Any court found to be measuring otherwise the following morning shall be closed by the Groundskeeper and shall not be spoken of.</p>
+      <p class="plain">Ⅲ. The ball is one ball. If there are two balls on the court, one of them is <span class="redacted">not a ball</span>.</p>
+      <p class="plain">Ⅳ. There is one player on the League roster who does not check in and does not check out. He is not to be substituted. He is not to be fouled. If he passes to you, <em>keep the ball moving</em>.</p>
+      <p class="plain">Ⅴ. Should the scoreboard read a score you did not earn, do not correct it. It is not a mistake. It is a suggestion.</p>
+      <div class="margin-note">Ⅵ. amended by a hand no clerk claims: <br>
+      "should the arena go dark in the middle of a possession, do not stop dribbling. do not stop until the lights return, however long that takes."</div>
+      <p>Ⅶ. All players surrender the right to be forgotten.</p>
+      <div class="signature">— Office of the Commissioner</div>
+    `
+  },
+  {
+    id: 'groundskeeper', row: 1, kind: 'scroll',
+    title: 'GK NOTE', label: 'FRAG β',
+    glyph: '✎', locked: false,
+    meta: 'FRAGMENT BETA · TAPED TO THE JANITOR\'S CART',
+    content: `
+      <h2>Fragment β</h2>
+      <div class="meta">Groundskeeper's Note</div>
+      <p class="plain">to whoever cleans after me — do not wax the center circle. i know it is sticky. i know it is dark. leave it.</p>
+      <p class="plain">to whoever cleans after me — the number on the jersey we found in section 4 was a <b>ZERO</b>. it is not the first zero we have found. it is not the last we will find. add it to the box.</p>
+      <p class="plain">to whoever cleans after me — if you hear a whistle after the arena has closed, that whistle is not for you. do not go to it. i went once. i am writing this to remind myself never to go again.</p>
+      <p class="plain">for the love of everything, do not answer the phone at the referee's table after midnight.</p>
+      <div class="signature">— G.</div>
+    `
+  },
+  {
+    id: 'rosters', row: 1, kind: 'book', variant: 'b-3',
+    title: 'Vol. III — Rosters, Redacted',
+    glyph: '⚑', locked: false,
+    meta: 'CLERICAL COPY · MANY NAMES CROSSED IN INK',
+    content: `
+      <h2>Rosters, Redacted</h2>
+      <div class="meta">Volume Three · The Missing</div>
+      <p>What follows is the roster of the Founding Season. A line drawn through a name signifies the player is no longer on the League roster. It does not, necessarily, signify the player is dead.</p>
+      <div class="quote">
+      #01 &nbsp; <s>ALLEN, R.</s><br>
+      #04 &nbsp; <s>BEUFORD, M.</s><br>
+      #07 &nbsp; CROSS, D.<br>
+      #09 &nbsp; <s>DELAINEY, J.</s><br>
+      #11 &nbsp; <s>EBERHART, C.</s><br>
+      #13 &nbsp; <s>FEIN, T.</s><br>
+      #17 &nbsp; <s>GRIMES, S.</s><br>
+      #20 &nbsp; HARVEY, W.<br>
+      #22 &nbsp; <s>IREDELL, O.</s><br>
+      #24 &nbsp; <s>JAMESON, K.</s><br>
+      #29 &nbsp; <s>KREIN, L.</s><br>
+      #34 &nbsp; <s>LOWES, F.</s><br>
+      #00 &nbsp; ————, —— &nbsp;<em>(entry incomplete)</em>
+      </div>
+      <p class="plain">Note from the Clerk : the twelfth player, #00, has never been fully entered onto the League roster. Attempts to write his name have resulted, in every instance, in the pen running dry.</p>
+      <div class="margin-note">whisper in the margin: <br>
+      "he does not have a name. he has a title. we called him only <b>PLAYER</b>." </div>
+      <div class="signature">— Office of the Clerk</div>
+    `
+  },
+
+  // ------ ROW 2 : locked ------
+  {
+    id: 'ledger', row: 2, kind: 'book', variant: 'b-4',
+    title: 'Vol. IV — The Referee\'s Ledger',
+    glyph: '⚖', locked: true,
+    key: 'ZEROHOUR',
+    hint: `The Founder wrote in the margin of Vol. I:<br><code>CHUR KRXU</code><br>Shift each letter back three places in the alphabet. Enter both words together, no space.`,
+    meta: 'PRIVATE LEDGER · REFEREE THIRTEEN · YEARS 1–4',
+    content: `
+      <h2>The Referee's Ledger</h2>
+      <div class="meta">Volume Four · Officiated in Silence</div>
+      <p>I have kept the score of every game since the League began. I am the only man who has been permitted, and the only man who has agreed. This is not a boast. This is a warning to the man who reads this after me.</p>
+      <p class="plain">Rule of the ledger: <em>you write what the scoreboard says. never what you saw.</em></p>
+      <p class="plain">Game 041 — the scoreboard read 88–88 at the buzzer. Overtime was called. The ball was tipped. The tip did not come down. The ball did not come down. We stood on the hardwood for one hour and eleven minutes. When the ball returned, it was warm.</p>
+      <p class="plain">Game 083 — Player #00 played every minute of every quarter. He did not sub. He did not sit. He did not sweat. When the final buzzer sounded I looked to shake his hand and he was already in the tunnel, three hundred feet away, without having moved.</p>
+      <div class="quote">
+      "There is a moment, always the same moment, always at the middle of the second quarter. The lights hum in a different key. The crowd goes flat. The whistle in my pocket becomes cold to the touch. This is the moment I am forbidden to describe. This is the moment we call, only in private, <b>the black court</b>."
+      </div>
+      <p class="plain">If you are reading this, and you are the next referee, learn to keep score in the dark. Learn to hear the ball without seeing it. And when a foul is committed by #00, you swallow the whistle. You swallow it.</p>
+      <div class="margin-note">the next key — an atbash. A↔Z, B↔Y, C↔X, and so on. one word. two hidden. decode it: <br>
+      <b>YOZXPXLFIG</b></div>
+      <div class="signature">— Ref. XIII</div>
+    `
+  },
+  {
+    id: 'journal', row: 2, kind: 'book', variant: 'b-5',
+    title: 'Vol. V — Player Zero\'s Journal',
+    glyph: '✵', locked: true,
+    key: 'BLACKCOURT',
+    hint: `The Referee's Ledger left an atbash cipher (A↔Z, B↔Y, C↔X…) at its close:<br><code>YOZXPXLFIG</code><br>Decipher it. It is one word. Type it exactly.`,
+    meta: 'JOURNAL · #00 · UNDATED · NO NAME SIGNED',
+    content: `
+      <h2>Player Zero's Journal</h2>
+      <div class="meta">Volume Five · The Player Without a Name</div>
+      <p>I did not agree to this. I did not disagree either. I do not remember being asked. When I woke I was already on the court, and my jersey was already numbered, and the number was the smallest one.</p>
+      <p class="plain">Kevin says hello every morning at practice. He does not know he has said hello to me eleven thousand times. Antonio taped my ankles once and cried and did not know why. Isaiah looked at me for a full minute and then had to sit down. None of them know.</p>
+      <p class="plain">I am not a ghost. Ghosts get to leave.</p>
+      <p class="plain">I have tried to leave. I walk to the tunnel. The tunnel becomes the court. I walk to the locker room. The locker room becomes the court. Once I lay down in the middle of the free throw line and closed my eyes for what I believed to be a year, and when I opened them the coach blew the whistle and said <em>let's run it back, PLAYER</em>.</p>
+      <div class="quote">"He is not permitted to score. He is not permitted to be scored upon. He is permitted, only, to play." — from the elder rulebook, section marked out.</div>
+      <p class="plain">The coach knows. The coach is the only one who knows. He does not look afraid when he looks at me. He looks <em>tired</em>, which is worse.</p>
+      <p class="plain">His name — the coach's name — begins with the letter of the fifth game we ever played. And then the letter of a whistle. And then the letter of the founder's last word. And then the letter of the night we do not speak of. And then the letter of the end.</p>
+      <div class="margin-note">first letters, in order, spell a name of five: <br>
+      <b>K</b>omets · <b>A</b>rbiter · <b>I</b>ncident · <b>N</b>octurne · <b>E</b>xit </div>
+      <p class="plain">If you are the next PLAYER, do not sign anything. Do not step to center court. Do not answer the whistle after midnight. Above all: <em>do not learn the coach's name</em>.</p>
+      <div class="signature">— #00, PLAYER</div>
+    `
+  },
+  {
+    id: 'ninth', row: 2, kind: 'book', variant: 'b-6',
+    title: 'Vol. VI — The Ninth Quarter',
+    glyph: '⌛', locked: true,
+    key: 'KAINE',
+    hint: `The Player's Journal listed five words. Take the first letter of each:<br><code>Komets · Arbiter · Incident · Nocturne · Exit</code><br>String them together. It is the coach's name.`,
+    meta: 'INCIDENT REPORT · SEASON ▓▓ · GAME UNRECORDED',
+    content: `
+      <h2>The Ninth Quarter</h2>
+      <div class="meta">Volume Six · An Impossible Game</div>
+      <p>What follows is the incident report for the game the League has stricken from the schedule. The game was played. The game did not happen. Both statements are true and neither is contradictory.</p>
+      <p class="plain">The game began at 7:37 PM. The game ended, by every clock in the arena, at 7:37 PM. Between those two 7:37s, there occurred four quarters of regulation play, four quarters of overtime, and one further quarter which does not appear in any rulebook and which is referred to, by the ten men who were present, only as <em>the ninth</em>.</p>
+      <p class="plain">The ninth was played in complete darkness. The scoreboard did not light. The refs did not blow. The ball was audible but not visible. The crowd — twelve thousand seated — did not breathe.</p>
+      <div class="quote">"I passed to no one and someone caught it. I ran to nowhere and someone screened for me. I shot into the black and something on the other side said <b>net</b>." — testimony, guard, unnamed.</div>
+      <p class="plain">Coach K. was on the sideline for the entire ninth. He did not draw a play. He did not call a timeout. He is reported to have said, once, quietly, one sentence, which the nearest player has agreed to transcribe here for the record:</p>
+      <div class="quote plain">"we're up. keep it moving. do not — under any circumstance — <span class="hidden-ink">let the ball land</span>."</div>
+      <p class="plain">When the ninth ended, the lights returned. The scoreboard read the same as before the game began. Every player on both benches had aged, in the estimation of the medical staff, between five and eleven years. Coach K. had aged not at all.</p>
+      <div class="margin-note">next key. numbers into letters, A=1 through Z=26. two words. two spaces (ignore the spaces): <br>
+      <b>6 · 9 · 14 · 1 · 12 &nbsp;&nbsp; 23 · 8 · 9 · 19 · 20 · 12 · 5</b></div>
+      <div class="signature">— Filed by Ref. XIII, out of habit</div>
+    `
+  },
+  {
+    id: 'whistle', row: 2, kind: 'scroll',
+    title: 'F. WHISTLE', label: 'FRAG ω',
+    glyph: '☠', locked: true,
+    key: 'FINALWHISTLE',
+    hint: `From the Ninth Quarter: A=1, B=2, C=3, … Z=26.<br><code>6 · 9 · 14 · 1 · 12 &nbsp;&nbsp; 23 · 8 · 9 · 19 · 20 · 12 · 5</code><br>Decode both words. Type them together, no space.`,
+    meta: 'FRAGMENT OMEGA · LAST PAGE · CHARRED EDGES',
+    content: `
+      <h2>Fragment ω</h2>
+      <div class="meta">The Last Referee's Last Page</div>
+      <p class="plain">i am the fourteenth ref. XIII taught me. XIII is gone now. gone in the way i have promised not to describe.</p>
+      <p class="plain">tonight i blew the whistle on <b>PLAYER</b>. i know. i know i was told not to. i had my reasons. the whistle went cold in my mouth. the arena went out.</p>
+      <p class="plain">when the arena came back on, PLAYER was on the sideline. he had not moved. he was standing next to the coach. they were the same height, which is not the height either of them is on paper.</p>
+      <p class="plain">the coach looked at me and said, softly, "you have named him now. you understand what happens next."</p>
+      <p class="plain">i understood. i am writing this quickly. i can already hear the second whistle. it is my whistle. it is calling my name.</p>
+      <div class="margin-note">the vault. one item left. its key is the answer to a single question: <br>
+      <em>what did we call him?</em> <br><br>
+      look through the archive. the scrawl called him <b>PLAYER</b>. the groundskeeper found a <b>ZERO</b>. the rulebook said "he is the number." put the title and the number together. one word.</div>
+      <div class="signature">— Ref. XIV</div>
+    `
+  },
+
+  // ------ VAULT ------
+  {
+    id: 'vault', row: 3, kind: 'artifact',
+    title: 'THE ROUND BLACK', locked: true,
+    key: 'PLAYERZERO',
+    hint: `Through this whole archive he was called only <b>PLAYER</b>, and his number was only <b>0</b>. Combine them into one word.`,
+    meta: 'THE COACH\'S CONFESSION · SEALED BY HIS OWN HAND',
+    content: `
+      <h2>The Coach's Confession</h2>
+      <div class="meta">The Final Volume · No Number · No Year</div>
+      <p>My name is <b>KAINE</b>. If you have read this far you have already put together most of what I am about to write. I will write it anyway, because it needs to be said in one place, in the open, in the light, before I go.</p>
+      <p class="plain">I founded the League. I invented Basketball : Zero. That is not the same as inventing basketball. Basketball I did not invent. Basketball : Zero, I did.</p>
+      <p class="plain">The rules of Basketball : Zero are simple. There are five players on each side, and one more, who plays for neither. The one more is the one I made. I made him out of a promise I did not have the right to make, and a shape I did not have the right to shape, and a number I did not have the right to hand out.</p>
+      <p class="plain">I called him <b>PLAYER</b>. I put a <b>0</b> on his back. I told him, on the first night, that he would play as long as the game was played, and I did not tell him that I intended for the game to be played forever.</p>
+      <div class="quote">He forgives me on Tuesdays. He does not forgive me on any other day.</div>
+      <p class="plain">Twelve of the thirteen founders are dead. The thirteenth is me. When I die, the game does not end. The game ends only when someone reads what I am about to write and does what I am about to describe.</p>
+      <p class="plain">Take a ball. A real one. Any one. Take it to the center of a court — any court, an empty lot will do, the pavement outside your house will do. Set the ball on the center circle. Do not touch it again. Walk to the tunnel. Do not look back. Do not, under any circumstance, dribble.</p>
+      <p class="plain">The ball will begin to bounce on its own. Once. Twice. Three times. On the fourth bounce, <b>PLAYER</b> is free. His number falls off him. His jersey empties. Somewhere in the world, a man wakes up in a bed he does not recognize, in a body he does not recognize, and it is a Tuesday and he is forgiven.</p>
+      <p class="plain">The League will end. The court will be a court again. The bell will not toll. The whistle will not call.</p>
+      <p class="plain">And me? I go to the tunnel. I have been putting it off for a very long time.</p>
+      <div class="signature">— K.</div>
+      <hr>
+      <p class="plain" style="text-align:center; font-style: italic; color: var(--blood);">
+        You have read every entry in the BBZ Codex.<br>
+        The archive is closed. Do not tell anyone what you have read.<br>
+        <br>
+        — 🜏 —
+      </p>
+    `
+  }
+];
+
+// ---- STATE ----
+const state = JSON.parse(localStorage.getItem('bbz_state') || '{}');
+
+function save() { localStorage.setItem('bbz_state', JSON.stringify(state)); }
+
+function isUnlocked(item) {
+  if (!item.locked) return true;
+  return !!state[item.id];
+}
+
+function unlock(item) {
+  state[item.id] = true;
+  save();
+  render();
+  updateCount();
+}
+
+function updateCount() {
+  const lockable = ITEMS.filter(i => i.locked);
+  const opened   = lockable.filter(i => state[i.id]).length;
+  document.getElementById('unlockCount').textContent = opened;
+  document.getElementById('unlockTotal').textContent = lockable.length;
+}
+
+// ---- RENDER ----
+function render() {
+  const rows = { 1: [], 2: [], 3: [] };
+  ITEMS.forEach(it => rows[it.row].push(it));
+
+  ['1','2','3'].forEach(r => {
+    const host = document.getElementById('row' + r);
+    host.innerHTML = '';
+    rows[r].forEach(it => host.appendChild(makeEl(it)));
+  });
+}
+
+function makeEl(it) {
+  const unlocked = isUnlocked(it);
+  let el;
+
+  if (it.kind === 'book') {
+    el = document.createElement('div');
+    el.className = 'book ' + (it.variant || '') + ' ' + (unlocked ? 'unlocked' : 'locked');
+    el.innerHTML = `
+      <div class="glyph">${it.glyph || '·'}</div>
+      <div class="band top"></div>
+      <div class="spine">${it.title.replace(/—/g, '·')}</div>
+      <div class="band bottom"></div>
+    `;
+  } else if (it.kind === 'scroll') {
+    el = document.createElement('div');
+    el.className = 'scroll ' + (unlocked ? 'unlocked' : 'locked');
+    el.innerHTML = `<div class="tag">${it.label}<br>${it.title}</div>`;
+  } else if (it.kind === 'artifact') {
+    el = document.createElement('div');
+    el.className = 'artifact ' + (unlocked ? 'unlocked' : 'locked');
+  }
+
+  el.title = unlocked ? it.title : '[ SEALED ] click to attempt';
+  el.addEventListener('click', () => {
+    if (unlocked) openPage(it);
+    else openLock(it);
+  });
+  return el;
+}
+
+// ---- READING MODAL ----
+function openPage(it) {
+  const inner = document.getElementById('pageInner');
+  inner.innerHTML = it.content;
+  document.getElementById('veil').classList.add('open');
+  inner.parentElement.scrollTop = 0;
+}
+function closePage() {
+  document.getElementById('veil').classList.remove('open');
+}
+
+// ---- LOCK MODAL ----
+let currentLock = null;
+function openLock(it) {
+  currentLock = it;
+  document.getElementById('lockTitle').innerHTML = '☩ ' + it.title.toUpperCase() + ' ☩';
+  document.getElementById('lockHint').innerHTML = it.hint || 'Speak the key. If you do not know it, seek it in the pages you have already read.';
+  document.getElementById('lockInput').value = '';
+  document.getElementById('lockErr').textContent = '';
+  document.getElementById('lockVeil').classList.add('open');
+  setTimeout(() => document.getElementById('lockInput').focus(), 50);
+}
+function closeLock() {
+  document.getElementById('lockVeil').classList.remove('open');
+  currentLock = null;
+}
+function submitKey() {
+  if (!currentLock) return;
+  const val = document.getElementById('lockInput').value.trim().toUpperCase().replace(/\s+/g, '');
+  const err = document.getElementById('lockErr');
+  if (val === currentLock.key) {
+    err.className = 'success';
+    err.textContent = '☩ THE SEAL BREAKS ☩';
+    setTimeout(() => {
+      unlock(currentLock);
+      closeLock();
+      err.className = 'err';
+      openPage(currentLock);
+    }, 900);
+  } else {
+    err.className = 'err';
+    const errs = [
+      'THE WHISTLE ANSWERS COLD.',
+      'THE ARCHIVE DOES NOT KNOW THAT WORD.',
+      'INCORRECT. THE COURT IS STILL DARK.',
+      'THE BALL DID NOT BOUNCE.',
+      'TRY AGAIN. LISTEN CLOSER.'
+    ];
+    err.textContent = errs[Math.floor(Math.random() * errs.length)];
+    document.getElementById('lockInput').value = '';
+  }
+}
+
+// ---- ABOUT & RESET ----
+function showAbout() {
+  const inner = document.getElementById('pageInner');
+  inner.innerHTML = `
+    <h2>About the Archive</h2>
+    <div class="meta">READ THIS FIRST · ONCE</div>
+    <p>This is the private archive of the League of <b>Basketball : Zero</b>. You are not supposed to be here. If you are here anyway, at least be careful.</p>
+    <p class="plain">The upper shelf is open. Read those books and scrolls first. Somewhere inside them — in the margins, in the postscripts, in the hands that were not the author's hand — you will find keys.</p>
+    <p class="plain">Every key you find breaks a seal on the lower shelf. Every book you open on the lower shelf points to the next key. Eventually you will reach the vault. The vault has only one item. That item was placed there by a coach whose name you will already know by the time you open it.</p>
+    <div class="quote">Rules of the archive:<br>
+    · Read every page before you attempt a lock.<br>
+    · Hidden ink is the color of the parchment — hover to darken it.<br>
+    · Redacted lines can be revealed by hovering. Sometimes.<br>
+    · Every key is a single UPPERCASE word. Ignore spaces and punctuation.<br>
+    · If you get stuck, the lock will offer a hint.</div>
+    <p class="plain">There are five seals in total. When they are all broken, the archive is closed and the game — the game we do not name — is finished.</p>
+    <div class="signature">— The Keeper</div>
+  `;
+  document.getElementById('veil').classList.add('open');
+}
+
+function resetAll() {
+  if (!confirm('Break every seal back into place? All progress lost.')) return;
+  Object.keys(state).forEach(k => delete state[k]);
+  save();
+  render();
+  updateCount();
+}
+
+// ---- BOOT ----
+render();
+updateCount();
+
+// occasional flicker
+setInterval(() => {
+  if (Math.random() < 0.08) {
+    document.body.style.filter = 'brightness(1.15) contrast(1.05)';
+    setTimeout(() => document.body.style.filter = '', 90);
+  }
+}, 2000);
+
+// konami-style easter egg: type ZEROHOUR anywhere on the page
+let buf = '';
+window.addEventListener('keydown', e => {
+  if (!e.key || e.key.length !== 1) return;
+  buf = (buf + e.key.toUpperCase()).slice(-20);
+  if (buf.endsWith('THEBALLNEVERLANDS')) {
+    document.body.style.animation = 'none';
+    alert('You spoke the words the Coach forbade.\n\nA ball begins to bounce, very far away.');
+  }
+});
+</script>
+
+</body>
+</html>
