@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Watcher's Archive — Basketball : Zero Competitive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cinzel:wght@500;700;900&family=Cinzel+Decorative:wght@700;900&family=Special+Elite&family=Nosifer&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:       #1a0f08;
+    --parch:     #e8d5a8;
+    --parch-dk:  #b89968;
+    --brown:     #3d2611;
+    --brown-dk:  #22160a;
+    --brown-lt:  #5a381a;
+    --blood:     #8a1c1c;
+    --blood-br:  #c93030;
+    --rust:      #a55a20;
+    --bone:      #ded1b0;
+    --ember:     #e8b558;
+    --ember-hot: #ffcf7a;
+    --shadow:    rgba(0,0,0,.85);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: #050301;
+    color: var(--parch);
+    font-family: 'EB Garamond', 'Cormorant Garamond', Georgia, serif;
+    font-size: 18px;
+    min-height: 100%;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background:
+      radial-gradient(ellipse at 50% 15%, #1c0e04 0%, #0a0501 60%, #000 100%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.006) 0 1px, transparent 1px 3px);
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+    position: relative;
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><circle cx='12' cy='12' r='2' fill='%23e8b558'/><circle cx='12' cy='12' r='6' fill='none' stroke='%23e8b558' stroke-width='.5' opacity='.6'/></svg>") 12 12, auto;
+  }
+
+  /* --- ANIMATED BACKGROUND LAYERS --- */
+
+  /* rolling fog */
+  .fog {
+    position: fixed; inset: -50%;
+    pointer-events: none;
+    z-index: 1;
+    background:
+      radial-gradient(ellipse 800px 400px at 20% 30%, rgba(120,70,30,.09) 0%, transparent 60%),
+      radial-gradient(ellipse 600px 500px at 80% 60%, rgba(80,40,20,.10) 0%, transparent 60%),
+      radial-gradient(ellipse 900px 300px at 50% 90%, rgba(60,20,10,.12) 0%, transparent 65%);
+    animation: fogDrift 45s ease-in-out infinite alternate;
+    filter: blur(20px);
+    opacity: .8;
+  }
+  @keyframes fogDrift {
+    0%   { transform: translate(-3%, -2%) rotate(0.5deg); }
+    50%  { transform: translate(2%, 3%)   rotate(-0.5deg); }
+    100% { transform: translate(-2%, 1%)  rotate(0.3deg); }
+  }
+
+  /* subtle static noise — kept extremely low */
+  .noise {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 5;
+    opacity: .035;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+  }
+
+  /* vignette with soft corner-shadows replacing the cobwebs */
+  .vignette {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 3;
+    background:
+      /* the four corner shadows */
+      radial-gradient(ellipse 260px 260px at 0% 0%,     rgba(0,0,0,.85), transparent 65%),
+      radial-gradient(ellipse 260px 260px at 100% 0%,   rgba(0,0,0,.85), transparent 65%),
+      radial-gradient(ellipse 300px 300px at 0% 100%,   rgba(0,0,0,.90), transparent 65%),
+      radial-gradient(ellipse 300px 300px at 100% 100%, rgba(0,0,0,.90), transparent 65%),
+      /* main vignette */
+      radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.60) 95%, #000 100%);
+    animation: vignettePulse 12s ease-in-out infinite alternate;
+  }
+  @keyframes vignettePulse {
+    from { opacity: .92; }
+    to   { opacity: 1;   }
+  }
+
+  /* --- FLOATING WHISPERS (drifting cursed text / symbols) --- */
+  .whispers {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    overflow: hidden;
+  }
+  .whisper {
+    position: absolute;
+    color: rgba(232,181,88,.32);
+    font-family: 'Cinzel', 'EB Garamond', serif;
+    font-style: italic;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-shadow: 0 0 12px rgba(232,181,88,.15);
+    white-space: nowrap;
+    opacity: 0;
+    animation: whisperDrift linear forwards;
+    will-change: transform, opacity;
+  }
+  .whisper.blood {
+    color: rgba(201,48,48,.32);
+    text-shadow: 0 0 12px rgba(201,48,48,.18);
+  }
+  .whisper.symbol {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 2.2em;
+    letter-spacing: 8px;
+    color: rgba(232,181,88,.22);
+  }
+  @keyframes whisperDrift {
+    0%   { opacity: 0; transform: translate(0, 0) rotate(var(--rot, -2deg)); }
+    15%  { opacity: 1; }
+    85%  { opacity: 1; }
+    100% { opacity: 0; transform: translate(var(--dx, -140px), var(--dy, -40px)) rotate(var(--rot, -2deg)); }
+  }
+
+  /* particle container */
+  .particles {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    background: var(--ember);
+    border-radius: 50%;
+    box-shadow: 0 0 4px currentColor;
+    opacity: 0;
+    color: var(--ember);
+    animation: floatUp linear forwards;
+  }
+  .particle.ember {
+    background: var(--blood-br);
+    color: var(--blood-br);
+    box-shadow: 0 0 6px currentColor, 0 0 12px rgba(201,48,48,.4);
+  }
+  .particle.dust {
+    background: rgba(217,163,74,.5);
+    box-shadow: none;
+  }
+  @keyframes floatUp {
+    0%   { opacity: 0; transform: translateY(0) translateX(0); }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-100vh) translateX(var(--drift, 40px)); }
+  }
+
+  /* cobwebs */
+  .web {
+    position: fixed;
+    pointer-events: none;
+    width: 220px; height: 220px;
+    z-index: 3;
+    opacity: .35;
+    filter: drop-shadow(0 0 2px rgba(0,0,0,.8));
+  }
+  .web.tl { top: 0; left: 0; }
+  .web.tr { top: 0; right: 0; transform: scaleX(-1); }
+  .web.bl { bottom: 0; left: 0; transform: scaleY(-1); }
+  .web.br { bottom: 0; right: 0; transform: scale(-1); }
+
+  header {
+    text-align: center;
+    position: relative;
+    z-index: 6;
+    padding: 30px 0 44px;
+    border-bottom: 1px dashed #3d2611;
+    margin-bottom: 50px;
+  }
+
+  .stamp {
+    display: inline-block;
+    border: 3px double var(--blood-br);
+    color: var(--blood-br);
+    padding: 8px 22px;
+    font-family: 'Special Elite', monospace;
+    font-size: 13px;
+    letter-spacing: 5px;
+    transform: rotate(-2.5deg);
+    margin-bottom: 24px;
+    opacity: .9;
+    text-shadow: 1px 1px 0 rgba(0,0,0,.6);
+    box-shadow: 0 0 20px rgba(138,28,28,.15);
+  }
+
+  h1 {
+    font-family: 'Cinzel Decorative', 'Cinzel', serif;
+    font-weight: 900;
+    font-size: clamp(42px, 8vw, 84px);
+    color: var(--ember);
+    letter-spacing: 4px;
+    text-shadow:
+      0 0 30px rgba(232,181,88,.25),
+      0 2px 0 #000,
+      2px 2px 0 #000,
+      -1px -1px 0 #000;
+    line-height: 1.1;
+  }
+  h1 .glitch {
+    color: var(--blood-br);
+    position: relative;
+    display: inline-block;
+    text-shadow: 0 0 24px rgba(201,48,48,.28), 2px 2px 0 #000;
+  }
+
+  .subtitle {
+    font-family: 'Cinzel', serif;
+    font-weight: 500;
+    color: var(--parch-dk);
+    margin-top: 14px;
+    letter-spacing: 6px;
+    font-size: 13px;
+    text-transform: uppercase;
+  }
+
+  .counter {
+    margin-top: 20px;
+    font-family: 'Special Elite', monospace;
+    font-size: 12px;
+    color: var(--parch-dk);
+    letter-spacing: 3px;
+  }
+  .counter .num {
+    color: var(--ember);
+    font-size: 16px;
+    text-shadow: 0 0 8px rgba(232,181,88,.5);
+  }
+
+  /* shelf */
+  .archive {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 6;
+  }
+
+  .shelf {
+    position: relative;
+    padding: 30px 40px 14px;
+    margin-bottom: 90px;
+    background:
+      /* fine wood grain */
+      repeating-linear-gradient(90deg,
+        rgba(255,180,80,.02)   0 2px,
+        transparent            2px 5px,
+        rgba(0,0,0,.06)        5px 6px,
+        transparent            6px 12px),
+      /* subtle warm wood tint */
+      linear-gradient(180deg,
+        rgba(60,30,10,.30) 0%,
+        rgba(30,15,5,.55)  60%,
+        rgba(15,8,3,.75)  100%),
+      #0a0603;
+    border-bottom: 22px solid transparent;
+    border-image: linear-gradient(180deg, #3d2611 0%, #1a0f06 50%, #0a0603 100%) 1;
+    box-shadow:
+      0 22px 0 #0a0603,
+      0 40px 70px rgba(0,0,0,.95),
+      inset 0 1px 0 rgba(255,180,80,.06),
+      inset 0 -2px 0 rgba(0,0,0,.6);
+    border-radius: 2px;
+  }
+  /* top-inner shadow to sell "back of shelf" */
+  .shelf::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 40px;
+    background: linear-gradient(180deg, rgba(0,0,0,.55) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  /* left & right shelf pillars */
+  .shelf::after {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 22px; left: 0; right: 0;
+    background:
+      linear-gradient(90deg,
+        #22160a 0%, #0a0603 12px,
+        transparent 12px, transparent calc(100% - 12px),
+        #0a0603 calc(100% - 12px), #22160a 100%);
+    pointer-events: none;
+    z-index: 0;
+    box-shadow:
+      inset 12px 0 8px -8px rgba(0,0,0,.7),
+      inset -12px 0 8px -8px rgba(0,0,0,.7);
+  }
+  .row { position: relative; z-index: 1; }
+
+  .shelf-label {
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--parch-dk);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+    opacity: .7;
+  }
+
+  .row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 6px;
+    min-height: 240px;
+    flex-wrap: wrap;
+  }
+
+  /* --- BOOKS --- */
+  .book {
+    width: 56px;
+    min-height: 210px;
+    background: var(--brown);
+    border: 1px solid #0a0603;
+    border-radius: 3px 3px 4px 4px;
+    position: relative;
+    cursor: pointer;
+    transition: transform .3s cubic-bezier(.25,.9,.3,1), box-shadow .3s, filter .3s;
+    box-shadow:
+      inset 4px 0 0 rgba(0,0,0,.35),
+      inset -4px 0 0 rgba(0,0,0,.45),
+      inset 0 5px 0 rgba(255,255,255,.06),
+      inset 0 -3px 0 rgba(0,0,0,.35),
+      3px 3px 10px rgba(0,0,0,.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: brightness(.95) contrast(1.05);
+    overflow: hidden;
+  }
+  /* leather grain */
+  .book::after {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      repeating-linear-gradient(0deg,
+        rgba(255,255,255,.02) 0 1px,
+        transparent 1px 3px),
+      radial-gradient(ellipse at 50% 20%, rgba(255,255,255,.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .book:hover {
+    transform: translateY(-16px) scale(1.02);
+    filter: brightness(1.15) contrast(1.08);
+    box-shadow:
+      inset 4px 0 0 rgba(0,0,0,.35),
+      inset -4px 0 0 rgba(0,0,0,.45),
+      inset 0 5px 0 rgba(255,255,255,.08),
+      3px 10px 25px rgba(232,181,88,.28),
+      3px 3px 10px rgba(0,0,0,.75);
+  }
+
+  .book .spine {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 11.5px;
+    letter-spacing: 2.5px;
+    color: var(--ember);
+    text-transform: uppercase;
+    text-shadow: 1px 0 0 #000, 0 0 4px rgba(0,0,0,.8);
+    padding: 16px 0;
+    text-align: center;
+    line-height: 1.5;
+    position: relative;
+    z-index: 2;
+  }
+
+  .book .glyph {
+    position: absolute;
+    top: 8px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    color: var(--ember);
+    opacity: .7;
+  }
+
+  .book .band {
+    position: absolute;
+    left: 0; right: 0;
+    height: 6px;
+    background: repeating-linear-gradient(90deg, #d9a24a 0 4px, transparent 4px 8px);
+    opacity: .45;
+  }
+  .book .band.top    { top: 30px; }
+  .book .band.bottom { bottom: 30px; }
+
+  /* variants */
+  .b-1  { height: 260px; background: linear-gradient(90deg, #180e05, #22160a, #180e05); }
+  .b-2  { height: 230px; background: linear-gradient(90deg, #2f1d0d, #3d2611, #2f1d0d); }
+  .b-3  { height: 280px; background: linear-gradient(90deg, #3a1310, #4a1a10, #3a1310); }
+  .b-4  { height: 220px; background: linear-gradient(90deg, #22140a, #2a1a0d, #22140a); }
+  .b-5  { height: 270px; background: linear-gradient(90deg, #2a1a0b, #33200e, #2a1a0b); }
+  .b-6  { height: 240px; background: linear-gradient(90deg, #12090b, #1a0f06, #12090b); }
+  .b-7  { height: 290px; background: linear-gradient(90deg, #3a2010, #4a2a12, #3a2010); width: 64px; }
+  .b-8  { height: 210px; background: linear-gradient(90deg, #2e1408, #3a1a0a, #2e1408); }
+
+  /* Locked books: dim, sealed, quietly breathing — no seizure flicker */
+  .book.locked {
+    filter: brightness(.55) saturate(.6) contrast(1.05);
+    animation: sealedBreath 6s ease-in-out infinite;
+  }
+  .book.locked .spine {
+    color: var(--blood-br);
+    text-shadow:
+      0 0 8px rgba(138,28,28,.55),
+      1px 0 0 #000;
+  }
+  @keyframes sealedBreath {
+    0%, 100% { filter: brightness(.55) saturate(.6) contrast(1.05); }
+    50%      { filter: brightness(.68) saturate(.7) contrast(1.08); }
+  }
+  .book.locked::after {
+    content: attr(data-glyph);
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 22px;
+    color: var(--blood-br);
+    text-shadow: 0 0 10px rgba(201,48,48,.9), 0 0 20px rgba(138,28,28,.5);
+    background: rgba(0,0,0,.72);
+    width: 38px; height: 38px;
+    border: 1px solid var(--blood-br);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    animation: sealPulse 2.4s ease-in-out infinite;
+    z-index: 2;
+  }
+  @keyframes sealPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(201,48,48,.5); }
+    50%      { box-shadow: 0 0 22px 6px rgba(201,48,48,.15); }
+  }
+  .book.locked:hover {
+    filter: brightness(.9) saturate(.8) contrast(1.1);
+    animation: none;
+  }
+  .book.locked .scan {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(255,80,80,.10) 48%, rgba(255,80,80,.22) 50%, rgba(255,80,80,.10) 52%, transparent 100%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 2;
+    mix-blend-mode: screen;
+  }
+  .book.locked:hover .scan {
+    opacity: 1;
+    animation: scanBar 1.8s ease-in-out infinite;
+  }
+  @keyframes scanBar {
+    0%   { transform: translateY(-110%); }
+    100% { transform: translateY(110%);  }
+  }
+
+  .book.unlocked::before {
+    content: "";
+    position: absolute;
+    top: 4px; right: -4px;
+    width: 8px; height: 8px;
+    background: var(--ember-hot);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--ember), 0 0 16px rgba(232,181,88,.4);
+    animation: pulse 2s infinite;
+    z-index: 2;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: .5; transform: scale(1); }
+    50%      { opacity: 1;  transform: scale(1.2); }
+  }
+
+  /* --- SCROLLS --- */
+  .scroll {
+    width: 70px;
+    height: 80px;
+    align-self: flex-end;
+    margin-bottom: 8px;
+    background: linear-gradient(180deg, #7a5a30 0%, #4a3018 50%, #7a5a30 100%);
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+    box-shadow:
+      inset 0 -8px 0 rgba(0,0,0,.35),
+      inset 0 8px 0 rgba(0,0,0,.35),
+      2px 4px 10px rgba(0,0,0,.7);
+    transition: transform .2s;
+  }
+  .scroll:hover { transform: translateY(-6px) rotate(-2deg); }
+  .scroll::before, .scroll::after {
+    content: "";
+    position: absolute; left: 0; right: 0;
+    height: 10px;
+    background: linear-gradient(180deg, #6a4a24, #2a1a0a);
+  }
+  .scroll::before { top: 0; border-radius: 4px 4px 0 0; }
+  .scroll::after  { bottom: 0; border-radius: 0 0 4px 4px; }
+  .scroll .tag {
+    position: absolute;
+    top: 20px; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Special Elite', monospace;
+    font-size: 9px;
+    color: var(--bone);
+    letter-spacing: 1px;
+    text-align: center;
+    width: 90%;
+    line-height: 1.2;
+  }
+  .scroll.locked {
+    filter: brightness(.55) saturate(.6) contrast(1.05);
+    animation: sealedBreath 6.5s ease-in-out infinite;
+  }
+  .scroll.locked .tag {
+    color: var(--blood-br);
+    text-shadow: 0 0 6px rgba(138,28,28,.5);
+  }
+  .scroll.locked::after {
+    content: attr(data-glyph);
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    color: var(--blood-br);
+    text-shadow: 0 0 8px rgba(201,48,48,.8);
+    background: rgba(0,0,0,.7);
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--blood-br);
+    z-index: 2;
+    animation: sealPulse 2.4s ease-in-out infinite;
+  }
+  .scroll.locked:hover { animation: none; filter: brightness(.9) saturate(.8); }
+
+  /* --- ARTIFACT (game ball) --- */
+  .artifact {
+    width: 90px; height: 90px;
+    align-self: flex-end;
+    margin-bottom: 8px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 35% 30%, #6a2a10 0%, #3d1608 60%, #1a0803 100%);
+    position: relative;
+    cursor: pointer;
+    box-shadow:
+      inset -8px -8px 20px rgba(0,0,0,.6),
+      inset 4px 4px 10px rgba(255,120,50,.1),
+      3px 6px 15px rgba(0,0,0,.8);
+    transition: transform .3s;
+  }
+  .artifact:hover { transform: rotate(15deg) scale(1.05); }
+  .artifact::before {
+    content: "";
+    position: absolute; inset: 8px;
+    border-radius: 50%;
+    background:
+      linear-gradient(0deg, transparent 48%, #1a0803 49%, #1a0803 51%, transparent 52%),
+      linear-gradient(90deg, transparent 48%, #1a0803 49%, #1a0803 51%, transparent 52%),
+      radial-gradient(circle at 50% 50%, transparent 40%, #1a0803 41%, #1a0803 43%, transparent 44%);
+    opacity: .5;
+  }
+  .artifact::after {
+    content: "0";
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'UnifrakturCook', serif;
+    font-size: 36px;
+    color: var(--ember);
+    text-shadow: 0 0 12px rgba(217,162,74,.6);
+    opacity: .7;
+  }
+
+  /* --- SECTION HEADERS --- */
+  .section-title {
+    font-family: 'Cinzel Decorative', 'Cinzel', serif;
+    font-weight: 700;
+    color: var(--rust);
+    text-align: center;
+    font-size: 20px;
+    letter-spacing: 8px;
+    margin: 30px 0 8px;
+    text-shadow: 1px 1px 0 #000, 0 0 14px rgba(165,90,32,.25);
+    text-transform: uppercase;
+    position: relative;
+  }
+  .section-title::before, .section-title::after {
+    content: "";
+    display: inline-block;
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--rust), transparent);
+    vertical-align: middle;
+    margin: 0 22px;
+    opacity: .5;
+  }
+  .section-sub {
+    text-align: center;
+    color: var(--parch-dk);
+    font-style: italic;
+    font-size: 15px;
+    margin-bottom: 32px;
+    letter-spacing: 1.5px;
+  }
+
+  /* --- MODAL --- */
+  .veil {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.92);
+    backdrop-filter: blur(2px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+    animation: fadeIn .3s;
+  }
+  .veil.open { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .page {
+    background:
+      radial-gradient(ellipse at top left, #ecd8ab 0%, #c9a874 50%, #987048 100%),
+      #c9a874;
+    color: #201206;
+    max-width: 760px;
+    width: 100%;
+    max-height: 88vh;
+    padding: 56px 62px;
+    border: 2px solid #3d2611;
+    box-shadow:
+      inset 0 0 60px rgba(80,40,10,.35),
+      inset 0 0 200px rgba(0,0,0,.20),
+      0 20px 80px rgba(0,0,0,.95);
+    font-family: 'EB Garamond', 'Cormorant Garamond', Georgia, serif;
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 1.75;
+    overflow-y: auto;
+    position: relative;
+    border-radius: 2px;
+    animation: pageEnter .4s cubic-bezier(.2,.9,.3,1);
+  }
+  @keyframes pageEnter {
+    from { opacity: 0; transform: translateY(20px) scale(.98) rotate(-.3deg); }
+    to   { opacity: 1; transform: translateY(0)     scale(1)   rotate(0); }
+  }
+  .page::before {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(80,40,10,.14) 0, transparent 12%),
+      radial-gradient(circle at 80% 70%, rgba(80,40,10,.18) 0, transparent 10%),
+      radial-gradient(circle at 60% 20%, rgba(0,0,0,.08) 0, transparent 8%),
+      radial-gradient(circle at 30% 85%, rgba(80,40,10,.10) 0, transparent 15%);
+    pointer-events: none;
+  }
+  .page-inner { position: relative; z-index: 1; }
+
+  .page h2 {
+    font-family: 'Cinzel Decorative', 'Cinzel', serif;
+    font-weight: 900;
+    font-size: 38px;
+    color: #6a1414;
+    text-align: center;
+    margin-bottom: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0 rgba(255,240,200,.4);
+  }
+  .page .meta {
+    text-align: center;
+    font-family: 'Special Elite', monospace;
+    font-size: 12px;
+    letter-spacing: 4px;
+    color: #5a381a;
+    margin-bottom: 34px;
+    text-transform: uppercase;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(90,56,26,.3);
+  }
+  .page p {
+    margin-bottom: 18px;
+    text-align: left;
+    hyphens: auto;
+  }
+  .page p::first-letter {
+    font-family: 'Cinzel Decorative', serif;
+    font-weight: 900;
+    font-size: 52px;
+    float: left;
+    line-height: .9;
+    padding: 4px 10px 0 0;
+    color: #6a1414;
+    text-shadow: 2px 2px 0 rgba(255,240,200,.4);
+  }
+  .page p.plain::first-letter {
+    font-size: inherit; float: none; padding: 0; color: inherit; font-family: inherit; text-shadow: none;
+  }
+  .page .quote {
+    font-style: italic;
+    font-size: 18px;
+    border-left: 4px solid #8a1c1c;
+    padding: 12px 20px;
+    margin: 24px 4px;
+    background: rgba(80,40,10,.10);
+    color: #2c1608;
+    line-height: 1.7;
+  }
+  .page .redacted {
+    background: #1a0f08;
+    color: #1a0f08;
+    padding: 0 6px;
+    user-select: all;
+    transition: color .25s;
+    cursor: help;
+  }
+  .page .redacted:hover { color: #e8d5a8; }
+
+  .page .cipher {
+    font-family: 'Special Elite', monospace;
+    letter-spacing: 4px;
+    background: rgba(0,0,0,.08);
+    padding: 10px 14px;
+    display: inline-block;
+    margin: 10px 0;
+    color: #22160a;
+    border: 1px dashed #5a381a;
+  }
+
+  .page .margin-note {
+    font-family: 'Special Elite', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #6a1414;
+    transform: rotate(-1.2deg);
+    display: block;
+    padding: 12px 16px;
+    margin: 20px 0;
+    border: 1px dashed #6a1414;
+    background: rgba(255,240,200,.40);
+    box-shadow: 3px 4px 0 rgba(0,0,0,.10);
+  }
+  .page .margin-note b {
+    color: #3d0808;
+    letter-spacing: 2px;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+  }
+
+  .page .hidden-ink {
+    color: #b89968;
+    transition: color .35s, background .35s;
+    padding: 0 3px;
+    cursor: help;
+  }
+  .page .hidden-ink:hover { color: #6a1414; background: rgba(255,240,200,.5); }
+
+  .page .signature {
+    text-align: right;
+    font-family: 'Cinzel Decorative', serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #3d2611;
+    margin-top: 36px;
+    letter-spacing: 3px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(90,56,26,.3);
+  }
+
+  /* --- EVIDENCE LOCKER --- */
+  .page .evidence-title {
+    text-align: center;
+    font-family: 'Cinzel Decorative', serif;
+    font-weight: 700;
+    color: #6a1414;
+    letter-spacing: 6px;
+    font-size: 20px;
+    margin: 40px 0 6px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0 rgba(255,240,200,.4);
+  }
+  .page .evidence-intro {
+    text-align: center;
+    font-style: italic;
+    color: #3d2611;
+    margin-bottom: 26px;
+  }
+  .page .evidence-intro::first-letter {
+    font-size: inherit; float: none; padding: 0; color: inherit; font-family: inherit; text-shadow: none;
+  }
+  .page .evidence-wall {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 26px 20px;
+    padding: 20px 6px;
+    margin: 10px 0 24px;
+    background:
+      repeating-linear-gradient(45deg,
+        rgba(60,30,10,.05) 0 8px,
+        transparent 8px 18px),
+      rgba(0,0,0,.05);
+    border: 1px dashed rgba(90,56,26,.4);
+  }
+  .page .ev {
+    background: #f4e6c3;
+    padding: 10px 10px 14px;
+    box-shadow:
+      0 4px 12px rgba(0,0,0,.35),
+      0 12px 24px rgba(0,0,0,.15);
+    position: relative;
+    transform: rotate(var(--tilt, -1.5deg));
+    transition: transform .3s, box-shadow .3s, z-index 0s .3s;
+    cursor: zoom-in;
+  }
+  .page .ev:nth-child(2n)   { --tilt: 2deg; }
+  .page .ev:nth-child(3n)   { --tilt: -2.5deg; }
+  .page .ev:nth-child(4n)   { --tilt: 1.2deg; }
+  .page .ev:nth-child(5n)   { --tilt: -1deg; }
+  .page .ev:hover {
+    transform: rotate(0deg) scale(1.06);
+    box-shadow:
+      0 10px 30px rgba(0,0,0,.6),
+      0 20px 40px rgba(0,0,0,.3);
+    z-index: 5;
+    transition: transform .3s, box-shadow .3s, z-index 0s;
+  }
+  /* tape strip on top */
+  .page .ev::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-3deg);
+    width: 70px; height: 20px;
+    background: rgba(230,220,180,.55);
+    border: 1px solid rgba(180,160,120,.25);
+    box-shadow: 0 2px 4px rgba(0,0,0,.15);
+    z-index: 2;
+  }
+  .page .ev img {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #0a0603;
+    min-height: 100px;
+    /* fallback: broken image shows the alt text on parchment */
+    color: transparent;
+    object-fit: contain;
+  }
+  /* If the image file is missing, show a broken-image style card */
+  .page .ev img[alt]:not([src=""]) {
+    /* placeholder colors while loading / on error */
+    background:
+      repeating-linear-gradient(45deg,
+        rgba(0,0,0,.12) 0 6px,
+        rgba(0,0,0,.05) 6px 12px),
+      #2a1a0d;
+  }
+  .page .ev figcaption {
+    font-family: 'Special Elite', monospace;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #3d2611;
+    text-align: center;
+    margin-top: 10px;
+    letter-spacing: 1px;
+  }
+  /* Fallback badge shown over broken images (uses ::after on the figure) */
+  .page .ev.missing::after {
+    content: "MISSING · upload to /evidence/";
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(106,20,20,.85);
+    color: #ffdca0;
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 6px 10px;
+    border: 1px dashed #ffdca0;
+    z-index: 3;
+    text-align: center;
+    max-width: 80%;
+    line-height: 1.4;
+  }
+
+  .page hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #5a381a, transparent);
+    margin: 20px 0;
+  }
+
+  .close {
+    position: absolute;
+    top: 12px; right: 16px;
+    background: none;
+    border: 1px solid var(--brown-dk);
+    color: var(--brown-dk);
+    font-family: 'Special Elite', monospace;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 4px 10px;
+    z-index: 3;
+  }
+  .close:hover { background: var(--blood); color: var(--parch); border-color: var(--blood); }
+
+  /* --- LOCK PROMPT --- */
+  .lock-veil {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.95);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 20px;
+  }
+  .lock-veil.open { display: flex; }
+  .lock-box {
+    background: #0f0803;
+    border: 2px solid var(--blood);
+    padding: 40px 34px;
+    max-width: 460px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(106,20,20,.4), inset 0 0 30px rgba(0,0,0,.9);
+  }
+  .lock-box h3 {
+    font-family: 'Cinzel Decorative', serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--blood-br);
+    margin-bottom: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-shadow: 0 0 12px rgba(201,48,48,.4);
+  }
+  .lock-box .hint {
+    color: var(--parch);
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    margin-bottom: 26px;
+    line-height: 1.65;
+  }
+  .lock-box .hint code {
+    font-family: 'Special Elite', monospace;
+    color: var(--ember);
+    letter-spacing: 3px;
+    background: rgba(217,162,74,.08);
+    padding: 2px 6px;
+    border: 1px dashed var(--rust);
+    display: inline-block;
+    margin: 4px 0;
+  }
+  .lock-box input {
+    width: 100%;
+    padding: 12px 14px;
+    background: #1a0f06;
+    border: 1px solid var(--rust);
+    color: var(--ember);
+    font-family: 'Special Elite', monospace;
+    font-size: 16px;
+    letter-spacing: 4px;
+    text-align: center;
+    text-transform: uppercase;
+    outline: none;
+  }
+  .lock-box input:focus { border-color: var(--ember); box-shadow: 0 0 12px rgba(217,162,74,.25); }
+  .lock-box .row-btn {
+    display: flex; gap: 10px; margin-top: 16px;
+  }
+  .lock-box button {
+    flex: 1;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid var(--rust);
+    color: var(--ember);
+    font-family: 'Special Elite', monospace;
+    letter-spacing: 3px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all .2s;
+  }
+  .lock-box button.primary { border-color: var(--ember); }
+  .lock-box button:hover { background: var(--brown); color: var(--parch); }
+  .lock-box .err {
+    color: var(--blood);
+    font-family: 'Special Elite', monospace;
+    font-size: 12px;
+    margin-top: 10px;
+    letter-spacing: 2px;
+    min-height: 18px;
+  }
+  .lock-box .success {
+    color: var(--ember);
+    font-family: 'Cinzel Decorative', serif;
+    font-weight: 700;
+    font-size: 18px;
+    margin-top: 14px;
+    letter-spacing: 4px;
+    text-shadow: 0 0 12px rgba(232,181,88,.5);
+    animation: successFlare .9s;
+  }
+  @keyframes successFlare {
+    0% { transform: scale(.9); opacity: 0; }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  /* --- FOOTER --- */
+  footer {
+    margin-top: 60px;
+    padding: 40px 20px 10px;
+    text-align: center;
+    color: #3d2611;
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    position: relative;
+    z-index: 3;
+    border-top: 1px dashed #22160a;
+    line-height: 2;
+  }
+  footer .sigil {
+    font-size: 28px;
+    color: var(--blood);
+    display: block;
+    margin-bottom: 10px;
+    text-shadow: 0 0 12px rgba(106,20,20,.4);
+  }
+  footer .hidden-clue {
+    color: #0f0803;
+    letter-spacing: 4px;
+    transition: color .4s;
+    display: block;
+    margin-top: 20px;
+    user-select: text;
+  }
+  footer .hidden-clue:hover { color: var(--ember); }
+
+  /* --- codex directory buttons --- */
+  .nav {
+    text-align: center;
+    margin-bottom: 30px;
+    z-index: 3;
+    position: relative;
+  }
+  .nav button {
+    background: transparent;
+    border: 1px solid var(--rust);
+    color: var(--ember);
+    font-family: 'Special Elite', monospace;
+    padding: 6px 14px;
+    margin: 0 4px;
+    cursor: pointer;
+    letter-spacing: 2px;
+    font-size: 11px;
+    transition: all .2s;
+  }
+  .nav button:hover { background: var(--brown); color: var(--parch); }
+  .nav button.danger { border-color: var(--blood); color: var(--blood); }
+  .nav button.danger:hover { background: var(--blood); color: var(--parch); }
+
+  /* mobile */
+  @media (max-width: 640px) {
+    body { font-size: 16px; padding: 20px 12px 60px; }
+    .page { padding: 34px 22px; font-size: 17px; }
+    .page h2 { font-size: 26px; letter-spacing: 1px; }
+    .page p::first-letter { font-size: 40px; }
+    .row { gap: 4px; }
+    .book { width: 42px; }
+    .book .spine { font-size: 10px; letter-spacing: 1.5px; }
+    .shelf { padding: 16px 20px 8px; }
+    h1 { letter-spacing: 2px; }
+    .whisper { font-size: .8em !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- animated background layers -->
+<div class="fog"></div>
+<div class="particles" id="particles"></div>
+<div class="whispers" id="whispers"></div>
+<div class="vignette"></div>
+<div class="noise"></div>
+
+<header>
+  <div class="stamp">PROPERTY OF THE WATCHER</div>
+  <h1>The Watcher's <span class="glitch" data-text="Archive">Archive</span></h1>
+  <p class="subtitle">Basketball : Zero Competitive &nbsp;·&nbsp; Chronicles of the Leagues</p>
+  <div class="counter">SEALS BROKEN <span class="num" id="unlockCount">0</span> / <span id="unlockTotal">5</span></div>
+</header>
+
+<div class="nav">
+  <button onclick="showAbout()">◆ ABOUT THE ARCHIVE ◆</button>
+  <button class="danger" onclick="resetAll()">✕ RESET ALL SEALS</button>
+</div>
+
+<main class="archive">
+
+  <div class="section-title">— UPPER SHELF —</div>
+  <div class="section-sub">First-hand accounts. The League permitted these.</div>
+  <div class="shelf">
+    <div class="shelf-label">Cabinet I · Section A</div>
+    <div class="row" id="row1">
+      <!-- rendered by JS -->
+    </div>
+  </div>
+
+  <div class="section-title">— LOWER SHELF —</div>
+  <div class="section-sub">These do not officially exist. Read at your own risk.</div>
+  <div class="shelf">
+    <div class="shelf-label">Cabinet I · Section B · <span style="color: var(--blood)">SEALED</span></div>
+    <div class="row" id="row2">
+      <!-- rendered by JS -->
+    </div>
+  </div>
+
+  <div class="section-title">— THE VAULT —</div>
+  <div class="section-sub">One item. It has never been read aloud.</div>
+  <div class="shelf">
+    <div class="shelf-label">Cabinet Ω · <span style="color: var(--blood)">DO NOT DISTURB</span></div>
+    <div class="row" id="row3">
+      <!-- rendered by JS -->
+    </div>
+  </div>
+
+</main>
+
+<!-- READING MODAL -->
+<div class="veil" id="veil" onclick="if(event.target===this) closePage()">
+  <div class="page">
+    <button class="close" onclick="closePage()">CLOSE ✕</button>
+    <div class="page-inner" id="pageInner"></div>
+  </div>
+</div>
+
+<!-- LOCK MODAL -->
+<div class="lock-veil" id="lockVeil" onclick="if(event.target===this) closeLock()">
+  <div class="lock-box">
+    <h3 id="lockTitle">☩ SEALED ☩</h3>
+    <p class="hint" id="lockHint"></p>
+    <input type="text" id="lockInput" maxlength="40" placeholder="ENTER THE KEY" autocomplete="off" onkeydown="if(event.key==='Enter') submitKey()">
+    <div class="row-btn">
+      <button onclick="closeLock()">CANCEL</button>
+      <button class="primary" onclick="submitKey()">SPEAK IT</button>
+    </div>
+    <div class="err" id="lockErr"></div>
+  </div>
+</div>
+
+<footer>
+  <span class="sigil">🜏 ⚸ 🜏</span>
+  THE WATCHER'S ARCHIVE · BASKETBALL : ZERO COMPETITIVE<br>
+  UNOFFICIAL · UNRECORDED · UNSPOKEN<br>
+  <span class="hidden-clue">// the black swordsman has been sighted. do not follow him into the tunnel. //</span>
+</footer>
+
+<script>
+/* ========================================================================
+   THE BBZ CODEX
+   =====================================================================  */
+
+const ITEMS = [
+
+  // ------ ROW 1 : freely readable ------
+  {
+    id: 'founding', row: 1, kind: 'book', variant: 'b-1',
+    title: 'Vol. I — The Pumpkin Trial',
+    glyph: '🎃', locked: false,
+    meta: 'CHRONICLE ONE · THE PUMPKIN TRIAL · LEAGUE: PROJECT ZERO',
+    content: `
+      <h2>The Pumpkin Trial</h2>
+      <div class="meta">Volume One · The Fall of the Gold Pumpkin · League of Project Zero</div>
+      <p>His name was <b>CHRISTIAN</b>. He wore, in place of a face, a hollowed pumpkin painted in gold, and he called himself the Commissioner of <b>PROJECT ZERO</b> — one of the leagues that plays under the banner of Basketball : Zero Competitive. In the beginning, Commissioner was a title he had earned. In the end, it was a title he refused to surrender, and the community had to take it from him.</p>
+      <p class="plain">The Gold Pumpkin ruled the league by decree. He answered to no council. He answered, at first, only to his closest friend — a man named <b>MARCUS</b>, who had stood at his side since the founding. Marcus was the other Commissioner. Marcus was the one who kept the Pumpkin honest.</p>
+      <p class="plain">And so, one night, the Pumpkin demoted him.</p>
+      <div class="quote">"No cause was given. No vote was held. Marcus opened the ledger the next morning and found his name struck through in red. When he asked why, the Pumpkin laughed."</div>
+      <p class="plain">That was the first sign. There were others. There would be many others.</p>
+
+      <p class="plain">The trial did not begin with Marcus. The trial began with a woman named <b>JENNY</b>. She had done nothing. She had said nothing. She had, so far as any honest record shows, simply existed in the same channels as the Pumpkin, and this was enough.</p>
+      <p class="plain">The harassment came in waves. Threats first — anonymous, then not. Insults in the open chat. Private messages arriving in the dead of night. The mob knew that if the Commissioner did not stop them, no one would. The Commissioner did not stop them.</p>
+      <p class="plain">The Commissioner <em>watched</em>. He read every message. He was seen, on the record, in the room where it happened. And when the mob at last pushed Jenny to break, the Gold Pumpkin — sitting in his stream, in his mask, in his gold — <span class="hidden-ink">applauded</span>. On camera. On the record. Forever.</p>
+      <div class="quote">"He clapped. That is what I remember. He clapped."</div>
+
+      <p class="plain">The community rose. It did not rise quickly, and it did not rise all at once, but it rose. A tribunal was called. Testimony was taken. The Pumpkin came in his gold and left in his gold and was told, at the end, that the gold was not his anymore.</p>
+      <p class="plain">He was exiled. He was, on the same night, <b>EXECUTED ON STAGE</b> — a public unmasking, a stripping of every title, every role, every trace of his presence in Project Zero. The pumpkin was smashed on the floor of the arena. The pieces were swept into a box and the box was buried in the archives, which is where the Watcher found them, and which is where the Watcher writes now.</p>
+      <p class="plain">He was never seen again.</p>
+
+      <p class="plain">And yet.</p>
+      <p class="plain">There are those in the community who believe he did not stay dead. Who believe the Gold Pumpkin only broke — that Christian himself walked into the tunnel behind the stage and did not walk out the other side. That he is out there still, in a different shape, under a different name, waiting.</p>
+      <p class="plain">They say he has come back. They say he has come back as the <b>BLACK SWORDSMAN</b>.</p>
+      <div class="quote">"If you see a figure in black on the edge of the lobby, in the quiet between matches, do not speak to him. Do not raise a hand. He remembers every name. He is writing them down."</div>
+
+      <div class="margin-note">— filed with this chronicle, evidence #00 —<br>
+      the recording of the trial itself:<br>
+      <a href="https://www.youtube.com/watch?v=dIMaTb4jj4U" target="_blank" rel="noopener" style="color:#4a0808; font-family:'Special Elite', monospace; letter-spacing:2px; text-decoration:underline;">▶ THE PUMPKIN TRIAL · full recording</a></div>
+
+      <h3 class="evidence-title">— Evidence Locker —</h3>
+      <p class="plain evidence-intro">Screenshots recovered from the Cotton Candy server and adjacent group chats. The originals are pinned below.</p>
+      <div class="evidence-wall">
+        <figure class="ev">
+          <img src="evidence/e01_jenny_threats.png" alt="Jenny: I was getting called fat, saying I'm gonna get raped by hella guys">
+          <figcaption>Ev. #01 · Jenny, 01/09/2025 · the first messages she received</figcaption>
+        </figure>
+        <figure class="ev">
+          <img src="evidence/e02_gc_pileon.png" alt="Group chat pile-on with kuno and anth000">
+          <figcaption>Ev. #02 · the pile-on escalates · Christian is added to the gc</figcaption>
+        </figure>
+        <figure class="ev">
+          <img src="evidence/e03_xiskuno_admits.png" alt="xiskuno admits Christian was encouraging people to leak Isaac's face">
+          <figcaption>Ev. #03 · xiskuno: "christian was incourging ppl to leak isacc face"</figcaption>
+        </figure>
+        <figure class="ev">
+          <img src="evidence/e04_cotton_candy_leak.png" alt="Cotton Candy server, #scrim channel, leaked photos of Isaac">
+          <figcaption>Ev. #04 · Cotton Candy · #scrim channel · the leak in progress</figcaption>
+        </figure>
+        <figure class="ev">
+          <img src="evidence/e05_christian_coverup.png" alt="Christian asks people to say he didn't have the leaked material">
+          <figcaption>Ev. #05 · Christian's own words: "say i didn't had it"</figcaption>
+        </figure>
+      </div>
+
+      <div class="margin-note">— written in the margin, other hand —<br>
+      the bell tolls twice at &nbsp;<b>CHUR &nbsp; KRXU</b>&nbsp; · shift each letter back three in the alphabet · they knew what they meant · that is your first key</div>
+
+      <div class="signature">— The Watcher</div>
+    `
+  },
+  {
+    id: 'scrawl', row: 1, kind: 'scroll',
+    title: 'BLANK', label: 'FRAG α',
+    glyph: '✎', locked: false,
+    meta: 'FRAGMENT ALPHA · AWAITING TRANSCRIPTION',
+    content: `
+      <h2>Awaiting Chronicle</h2>
+      <div class="meta">— The Watcher has not yet spoken —</div>
+      <p>This page is blank. The Watcher's ink has not yet touched it. When the next fragment is recovered, it will be transcribed here.</p>
+      <p class="plain">Return soon.</p>
+      <div class="signature">— The Watcher</div>
+    `
+  },
+  {
+    id: 'rulebook', row: 1, kind: 'book', variant: 'b-2',
+    title: 'Vol. II — Unwritten',
+    glyph: '§', locked: false,
+    meta: 'AWAITING CHRONICLE · VOLUME TWO',
+    content: `
+      <h2>Awaiting Chronicle</h2>
+      <div class="meta">— Volume Two · not yet recorded —</div>
+      <p>This volume is empty. The Watcher has set aside a place for the next chronicle — a different league, a different scandal, a different name at the top of the page — but has not yet begun to write.</p>
+      <p class="plain">Return when the next story is told.</p>
+      <div class="signature">— The Watcher</div>
+    `
+  },
+  {
+    id: 'groundskeeper', row: 1, kind: 'scroll',
+    title: 'BLANK', label: 'FRAG β',
+    glyph: '✎', locked: false,
+    meta: 'FRAGMENT BETA · AWAITING TRANSCRIPTION',
+    content: `
+      <h2>Awaiting Chronicle</h2>
+      <div class="meta">— The Watcher has not yet spoken —</div>
+      <p>This fragment is blank. When the next piece — from any league, any court, any night — is recovered, it will be transcribed here.</p>
+      <div class="signature">— The Watcher</div>
+    `
+  },
+  {
+    id: 'rosters', row: 1, kind: 'book', variant: 'b-3',
+    title: 'Vol. III — Unwritten',
+    glyph: '⚑', locked: false,
+    meta: 'AWAITING CHRONICLE · VOLUME THREE',
+    content: `
+      <h2>Awaiting Chronicle</h2>
+      <div class="meta">— Volume Three · not yet recorded —</div>
+      <p>The Watcher has set aside this volume for a chronicle yet to come. Return when the Watcher has spoken.</p>
+      <div class="signature">— The Watcher</div>
+    `
+  },
+
+  // ------ ROW 2 : locked ------
+  {
+    id: 'ledger', row: 2, kind: 'book', variant: 'b-4',
+    title: 'Vol. IV — Sealed',
+    glyph: '⚖', locked: true,
+    key: 'ZEROHOUR',
+    hint: `The Watcher wrote in the margin of Vol. I — The Pumpkin Trial:<br><code>CHUR KRXU</code><br>Shift each letter back three places in the alphabet. Enter both words together, no space.`,
+    meta: 'SEALED · AWAITING CHRONICLE · VOLUME FOUR',
+    content: `
+      <h2>Awaiting Chronicle</h2>
+      <div class="meta">— Volume Four · not yet recorded —</div>
+      <p>You have broken the first seal. The Watcher has set this page aside for a coming chronicle — another league, another incident inside Basketball : Zero Competitive — but has not yet begun to write.</p>
+      <p class="plain">Return when the Watcher has spoken. In the meantime, the next seal awaits its key.</p>
+      <div class="margin-note">— hidden here for the next reader —<br>
+      the next key is an <b>ATBASH</b> cipher. A↔Z, B↔Y, C↔X, and so on. one word. decode it:<br>
+      <b>YOZXPXLFIG</b></div>
+      <div class="signature">— The Watcher</div>
+    `
+  },
+  {
+    id: 'journal', row: 2, kind: 'book', variant: 'b-5',
+    title: 'Vol. V — Sealed',
+    glyph: '✵', locked: true,
+    key: 'BLACKCOURT',
+    hint: `The previous entry left an atbash cipher (A↔Z, B↔Y, C↔X…):<br><code>YOZXPXLFIG</code><br>Decipher it. It is one word. Type it exactly.`,
+    meta: 'SEALED · AWAITING CHRONICLE · VOLUME FIVE',
+    content: `
+      <h2>Awaiting Chronicle</h2>
+      <div class="meta">— Volume Five · not yet recorded —</div>
+      <p>Another seal falls. The Watcher has reserved this volume for a coming chronicle — a name, a league, a night that has already happened but has not yet been written down.</p>
+      <p class="plain">Return when the next story is told.</p>
+      <div class="margin-note">— for the next reader —<br>
+      the next key is an <b>ACROSTIC</b>. take the first letter of each word:<br>
+      <b>K</b>ept · <b>A</b>rchive · <b>I</b>nside · <b>N</b>ight · <b>E</b>choes</div>
+      <div class="signature">— The Watcher</div>
+    `
+  },
+  {
+    id: 'ninth', row: 2, kind: 'book', variant: 'b-6',
+    title: 'Vol. VI — Sealed',
+    glyph: '⌛', locked: true,
+    key: 'KAINE',
+    hint: `The previous entry listed five words. Take the first letter of each:<br><code>Kept · Archive · Inside · Night · Echoes</code><br>String them together.`,
+    meta: 'SEALED · AWAITING CHRONICLE · VOLUME SIX',
+    content: `
+      <h2>Awaiting Chronicle</h2>
+      <div class="meta">— Volume Six · not yet recorded —</div>
+      <p>The seal breaks. The page beneath it is still empty. The Watcher has reserved this volume for a coming chronicle — another league, another player, another line that should never have been crossed.</p>
+      <p class="plain">Return when the next story is told.</p>
+      <div class="margin-note">— for the next reader —<br>
+      the next key is a <b>NUMERIC</b> cipher. A=1, B=2, C=3, … Z=26. two words. ignore the spaces:<br>
+      <b>6 · 9 · 14 · 1 · 12 &nbsp;&nbsp; 23 · 8 · 9 · 19 · 20 · 12 · 5</b></div>
+      <div class="signature">— The Watcher</div>
+    `
+  },
+  {
+    id: 'whistle', row: 2, kind: 'scroll',
+    title: 'SEALED', label: 'FRAG ω',
+    glyph: '☠', locked: true,
+    key: 'FINALWHISTLE',
+    hint: `From the previous entry: A=1, B=2, C=3, … Z=26.<br><code>6 · 9 · 14 · 1 · 12 &nbsp;&nbsp; 23 · 8 · 9 · 19 · 20 · 12 · 5</code><br>Decode both words. Type them together, no space.`,
+    meta: 'SEALED · AWAITING CHRONICLE · FRAGMENT OMEGA',
+    content: `
+      <h2>Awaiting Chronicle</h2>
+      <div class="meta">— Fragment Omega · not yet recorded —</div>
+      <p>The fourth seal breaks. Beneath it, the Watcher has left only a placeholder — a shape waiting for a story to be poured into it.</p>
+      <p class="plain">Return when the Watcher has spoken.</p>
+      <div class="margin-note">— for the reader who reaches the vault —<br>
+      the final key is not a cipher. it is a name and a title from the first chronicle. the man who wore the gold pumpkin was called <b>PLAYER</b> ZERO in old drafts of the ledger — put the title and the number together into one word.</div>
+      <div class="signature">— The Watcher</div>
+    `
+  },
+
+  // ------ VAULT ------
+  {
+    id: 'vault', row: 3, kind: 'artifact',
+    title: 'THE VAULT', locked: true,
+    key: 'PLAYERZERO',
+    hint: `The man who wore the gold pumpkin was called <b>PLAYER</b> in the old drafts, and his number was <b>0</b>. Combine them into one word.`,
+    meta: 'THE VAULT · AWAITING FINAL CHRONICLE',
+    content: `
+      <h2>The Vault</h2>
+      <div class="meta">— Sealed by the Watcher · not yet opened —</div>
+      <p>You have broken every seal. The vault stands open.</p>
+      <p class="plain">Inside, there is a single black cloth folded on the floor. There is a broken shard of what was once a gold pumpkin. There is a page — blank — waiting for the Watcher to write on it.</p>
+      <div class="quote">"Some say he came back as the <b>BLACK SWORDSMAN</b>. If that is true, the last chronicle has not yet been written. The Watcher is watching. When there is something to say, the Watcher will say it here."</div>
+      <p class="plain">Return when the vault has a story inside it. For now, the archive is quiet.</p>
+      <div class="signature">— The Watcher</div>
+      <hr>
+      <p class="plain" style="text-align:center; font-style: italic; color: #6a1414;">
+        You have broken every seal in the Watcher's Archive.<br>
+        More chronicles are coming.<br>
+        <br>
+        — 🜏 —
+      </p>
+    `
+  }
+];
+
+// ---- STATE ----
+const state = JSON.parse(localStorage.getItem('bbz_state') || '{}');
+
+function save() { localStorage.setItem('bbz_state', JSON.stringify(state)); }
+
+function isUnlocked(item) {
+  if (!item.locked) return true;
+  return !!state[item.id];
+}
+
+function unlock(item) {
+  state[item.id] = true;
+  save();
+  render();
+  updateCount();
+}
+
+function updateCount() {
+  const lockable = ITEMS.filter(i => i.locked);
+  const opened   = lockable.filter(i => state[i.id]).length;
+  document.getElementById('unlockCount').textContent = opened;
+  document.getElementById('unlockTotal').textContent = lockable.length;
+}
+
+// ---- RENDER ----
+function render() {
+  const rows = { 1: [], 2: [], 3: [] };
+  ITEMS.forEach(it => rows[it.row].push(it));
+
+  ['1','2','3'].forEach(r => {
+    const host = document.getElementById('row' + r);
+    host.innerHTML = '';
+    rows[r].forEach(it => host.appendChild(makeEl(it)));
+  });
+}
+
+function makeEl(it) {
+  const unlocked = isUnlocked(it);
+  let el;
+
+  if (it.kind === 'book') {
+    el = document.createElement('div');
+    el.className = 'book ' + (it.variant || '') + ' ' + (unlocked ? 'unlocked' : 'locked');
+    el.innerHTML = `
+      <div class="glyph">${it.glyph || '·'}</div>
+      <div class="band top"></div>
+      <div class="spine">${it.title.replace(/—/g, '·')}</div>
+      <div class="band bottom"></div>
+      ${!unlocked ? '<div class="scan"></div>' : ''}
+    `;
+  } else if (it.kind === 'scroll') {
+    el = document.createElement('div');
+    el.className = 'scroll ' + (unlocked ? 'unlocked' : 'locked');
+    el.innerHTML = `<div class="tag">${it.label}<br>${it.title}</div>`;
+  } else if (it.kind === 'artifact') {
+    el = document.createElement('div');
+    el.className = 'artifact ' + (unlocked ? 'unlocked' : 'locked');
+  }
+  if (!unlocked) el.dataset.glyph = '🜏';
+
+  el.title = unlocked ? it.title : '[ SEALED ] click to attempt';
+  el.addEventListener('click', () => {
+    if (unlocked) openPage(it);
+    else openLock(it);
+  });
+  return el;
+}
+
+// ---- READING MODAL ----
+function openPage(it) {
+  const inner = document.getElementById('pageInner');
+  inner.innerHTML = it.content;
+  document.getElementById('veil').classList.add('open');
+  inner.parentElement.scrollTop = 0;
+
+  // Mark missing evidence images so the "MISSING" badge shows
+  inner.querySelectorAll('.ev img').forEach(img => {
+    const flag = () => img.parentElement.classList.add('missing');
+    if (img.complete && (img.naturalWidth === 0 || img.naturalHeight === 0)) flag();
+    img.addEventListener('error', flag);
+  });
+
+  // Zoom-on-click for evidence
+  inner.querySelectorAll('.ev').forEach(fig => {
+    fig.addEventListener('click', e => {
+      const img = fig.querySelector('img');
+      if (!img || fig.classList.contains('missing')) return;
+      const src = img.getAttribute('src');
+      const overlay = document.createElement('div');
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:300;display:flex;align-items:center;justify-content:center;cursor:zoom-out;padding:20px;';
+      overlay.innerHTML = `<img src="${src}" style="max-width:96%;max-height:96%;box-shadow:0 0 60px rgba(0,0,0,.9);border:2px solid #6a1414;">`;
+      overlay.addEventListener('click', () => overlay.remove());
+      document.body.appendChild(overlay);
+      e.stopPropagation();
+    });
+  });
+}
+function closePage() {
+  document.getElementById('veil').classList.remove('open');
+}
+
+// ---- LOCK MODAL ----
+let currentLock = null;
+function openLock(it) {
+  currentLock = it;
+  document.getElementById('lockTitle').innerHTML = '☩ ' + it.title.toUpperCase() + ' ☩';
+  document.getElementById('lockHint').innerHTML = it.hint || 'Speak the key. If you do not know it, seek it in the pages you have already read.';
+  document.getElementById('lockInput').value = '';
+  document.getElementById('lockErr').textContent = '';
+  document.getElementById('lockVeil').classList.add('open');
+  setTimeout(() => document.getElementById('lockInput').focus(), 50);
+}
+function closeLock() {
+  document.getElementById('lockVeil').classList.remove('open');
+  currentLock = null;
+}
+function submitKey() {
+  if (!currentLock) return;
+  const val = document.getElementById('lockInput').value.trim().toUpperCase().replace(/\s+/g, '');
+  const err = document.getElementById('lockErr');
+  if (val === currentLock.key) {
+    err.className = 'success';
+    err.textContent = '☩ THE SEAL BREAKS ☩';
+    setTimeout(() => {
+      unlock(currentLock);
+      closeLock();
+      err.className = 'err';
+      openPage(currentLock);
+    }, 900);
+  } else {
+    err.className = 'err';
+    const errs = [
+      'THE WHISTLE ANSWERS COLD.',
+      'THE ARCHIVE DOES NOT KNOW THAT WORD.',
+      'INCORRECT. THE COURT IS STILL DARK.',
+      'THE BALL DID NOT BOUNCE.',
+      'TRY AGAIN. LISTEN CLOSER.'
+    ];
+    err.textContent = errs[Math.floor(Math.random() * errs.length)];
+    document.getElementById('lockInput').value = '';
+  }
+}
+
+// ---- ABOUT & RESET ----
+function showAbout() {
+  const inner = document.getElementById('pageInner');
+  inner.innerHTML = `
+    <h2>About the Archive</h2>
+    <div class="meta">READ THIS FIRST · ONCE</div>
+    <p>This is the private archive of <b>BASKETBALL : ZERO COMPETITIVE</b> — the game and the culture that grew around it — kept and updated by the Watcher.</p>
+    <p class="plain">Basketball : Zero Competitive is played across many <em>leagues</em>. Each league has its own commissioners, its own rosters, its own scandals, and its own dead. When something happens inside a league that should not have happened, the Watcher makes a chronicle of it and files it here.</p>
+    <p class="plain">The first chronicle covers a league called <b>PROJECT ZERO</b>. There will be others. There are always others.</p>
+    <p class="plain">The upper shelf holds the chronicles that have been released. Read them. Somewhere inside them — in the margins, in the postscripts, in the hands that were not the author's — you will find keys. Every key you find breaks a seal on the lower shelf. Every book you open on the lower shelf points to the next key. Eventually you will reach the vault.</p>
+    <div class="quote">Rules of the archive:<br>
+    · Read every page before you attempt a lock.<br>
+    · Hidden ink is the color of the parchment — hover to darken it.<br>
+    · Redacted lines can be revealed by hovering. Sometimes.<br>
+    · Every key is a single UPPERCASE word. Ignore spaces and punctuation.<br>
+    · If you get stuck, the lock will offer a hint.</div>
+    <p class="plain">There are five seals in total. When they are all broken, the archive is closed and the game — the game we do not name — is finished.</p>
+    <div class="signature">— The Keeper</div>
+  `;
+  document.getElementById('veil').classList.add('open');
+}
+
+function resetAll() {
+  if (!confirm('Break every seal back into place? All progress lost.')) return;
+  Object.keys(state).forEach(k => delete state[k]);
+  save();
+  render();
+  updateCount();
+}
+
+// ---- BOOT ----
+render();
+updateCount();
+
+/* ---- subtle candle-breath on the vignette only ---- */
+/* (kept intentionally minimal — no whole-page invert/flicker) */
+
+/* ---- particle system: floating dust motes + rising embers ---- */
+(function spawnParticles() {
+  const host = document.getElementById('particles');
+  if (!host) return;
+  function spawn() {
+    const p = document.createElement('div');
+    const roll = Math.random();
+    const isEmber = roll < 0.15;
+    const isDust  = !isEmber && roll < 0.75;
+    p.className = 'particle ' + (isEmber ? 'ember' : (isDust ? 'dust' : ''));
+    const size = isEmber ? (2 + Math.random() * 2.5)
+               : isDust  ? (1 + Math.random() * 1.5)
+                         : (1.5 + Math.random() * 2);
+    p.style.width  = size + 'px';
+    p.style.height = size + 'px';
+    p.style.left   = Math.random() * 100 + 'vw';
+    p.style.bottom = '-10px';
+    p.style.setProperty('--drift', ((Math.random() - .5) * 240) + 'px');
+    const dur = isEmber ? (7 + Math.random() * 6)
+                        : (14 + Math.random() * 18);
+    p.style.animationDuration = dur + 's';
+    host.appendChild(p);
+    setTimeout(() => p.remove(), dur * 1000 + 500);
+  }
+  // stagger a burst on load so the screen isn't empty
+  for (let i = 0; i < 30; i++) setTimeout(spawn, i * 180);
+  setInterval(spawn, 340);
+})();
+
+/* ---- corrupt seals: locked items very occasionally cycle glyphs ---- */
+const CORRUPT_GLYPHS = ['🜏','☩','⚸','☿','⚚','⛧','♆','⧗','🝳','🜛','⌖','☤','☠'];
+setInterval(() => {
+  document.querySelectorAll('.book.locked, .scroll.locked').forEach(el => {
+    if (Math.random() < 0.08) {
+      const glyph = CORRUPT_GLYPHS[Math.floor(Math.random() * CORRUPT_GLYPHS.length)];
+      el.dataset.glyph = glyph;
+      setTimeout(() => { el.dataset.glyph = '🜏'; }, 240 + Math.random() * 260);
+    }
+  });
+}, 1400);
+
+/* ---- floating whispers: drifting cursed text + symbols ---- */
+const WHISPER_TEXT = [
+  'memento mori', 'ex tenebris', 'nil desperandum', 'silentium',
+  'ave mortem', 'veritas ardet', 'spectat nos', 'in memoriam',
+  'requiem æternam', 'sub rosa', 'via umbrae', 'the pumpkin sees',
+  'the black swordsman', 'he is watching', 'nothing is forgiven',
+  'the archive remembers', 'do not follow', 'we know your name',
+  'audi silentium', 'nemo scit', 'finis coronat opus',
+  'they applauded', 'we saw everything',
+  'the gold has broken', 'somewhere he is walking',
+  'the league remembers', 'commissioners fall'
+];
+const WHISPER_SYMBOLS = [
+  '🜏 ⚸ 🜏', '☩ · ⚚ · ☩', '⛧ ⌖ ⛧', '☿ ♆ ☿',
+  '🜛 · 🝳', '⧗ ⧗ ⧗', '☠ ⚚ ☠', '🜏 · ⛧ · 🜏',
+  'Ⅷ · Ⅺ · Ⅳ', '⋆ ⋆ ⋆', '† · † · †', '☩ ☩ ☩'
+];
+(function spawnWhispers() {
+  const host = document.getElementById('whispers');
+  if (!host) return;
+  function spawn() {
+    const w = document.createElement('div');
+    const isSymbol = Math.random() < 0.35;
+    const isBlood  = !isSymbol && Math.random() < 0.30;
+    w.className = 'whisper ' + (isSymbol ? 'symbol' : (isBlood ? 'blood' : ''));
+    w.textContent = isSymbol
+      ? WHISPER_SYMBOLS[Math.floor(Math.random() * WHISPER_SYMBOLS.length)]
+      : WHISPER_TEXT[Math.floor(Math.random() * WHISPER_TEXT.length)];
+
+    const fromLeft = Math.random() < 0.5;
+    const startY = 10 + Math.random() * 80;         // vh
+    const startX = fromLeft ? -15 : 105;             // vw
+    const dx     = (fromLeft ? 1 : -1) * (120 + Math.random() * 160); // vw distance
+    const dy     = (Math.random() - .5) * 20;        // vh drift
+    const rot    = (Math.random() - .5) * 6;
+    const size   = isSymbol ? (14 + Math.random() * 6) : (13 + Math.random() * 6);
+    const dur    = 26 + Math.random() * 22;
+
+    w.style.left = startX + 'vw';
+    w.style.top  = startY + 'vh';
+    w.style.fontSize = size + 'px';
+    w.style.setProperty('--dx', dx + 'vw');
+    w.style.setProperty('--dy', dy + 'vh');
+    w.style.setProperty('--rot', rot + 'deg');
+    w.style.animationDuration = dur + 's';
+
+    host.appendChild(w);
+    setTimeout(() => w.remove(), dur * 1000 + 500);
+  }
+  // seed a few immediately
+  for (let i = 0; i < 3; i++) setTimeout(spawn, 800 + i * 2400);
+  // steady stream — sparse, never crowded
+  setInterval(spawn, 4200);
+})();
+
+// konami-style easter egg: type ZEROHOUR anywhere on the page
+let buf = '';
+window.addEventListener('keydown', e => {
+  if (!e.key || e.key.length !== 1) return;
+  buf = (buf + e.key.toUpperCase()).slice(-20);
+  if (buf.endsWith('THEBALLNEVERLANDS')) {
+    document.body.style.animation = 'none';
+    alert('You spoke the words the Coach forbade.\n\nA ball begins to bounce, very far away.');
+  }
+});
+</script>
+
+</body>
+</html>
