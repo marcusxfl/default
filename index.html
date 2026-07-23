@@ -779,6 +779,123 @@
     border-top: 1px solid rgba(90,56,26,.3);
   }
 
+  /* --- EVIDENCE LOCKER --- */
+  .page .evidence-title {
+    text-align: center;
+    font-family: 'Cinzel Decorative', serif;
+    font-weight: 700;
+    color: #6a1414;
+    letter-spacing: 6px;
+    font-size: 20px;
+    margin: 40px 0 6px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0 rgba(255,240,200,.4);
+  }
+  .page .evidence-intro {
+    text-align: center;
+    font-style: italic;
+    color: #3d2611;
+    margin-bottom: 26px;
+  }
+  .page .evidence-intro::first-letter {
+    font-size: inherit; float: none; padding: 0; color: inherit; font-family: inherit; text-shadow: none;
+  }
+  .page .evidence-wall {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 26px 20px;
+    padding: 20px 6px;
+    margin: 10px 0 24px;
+    background:
+      repeating-linear-gradient(45deg,
+        rgba(60,30,10,.05) 0 8px,
+        transparent 8px 18px),
+      rgba(0,0,0,.05);
+    border: 1px dashed rgba(90,56,26,.4);
+  }
+  .page .ev {
+    background: #f4e6c3;
+    padding: 10px 10px 14px;
+    box-shadow:
+      0 4px 12px rgba(0,0,0,.35),
+      0 12px 24px rgba(0,0,0,.15);
+    position: relative;
+    transform: rotate(var(--tilt, -1.5deg));
+    transition: transform .3s, box-shadow .3s, z-index 0s .3s;
+    cursor: zoom-in;
+  }
+  .page .ev:nth-child(2n)   { --tilt: 2deg; }
+  .page .ev:nth-child(3n)   { --tilt: -2.5deg; }
+  .page .ev:nth-child(4n)   { --tilt: 1.2deg; }
+  .page .ev:nth-child(5n)   { --tilt: -1deg; }
+  .page .ev:hover {
+    transform: rotate(0deg) scale(1.06);
+    box-shadow:
+      0 10px 30px rgba(0,0,0,.6),
+      0 20px 40px rgba(0,0,0,.3);
+    z-index: 5;
+    transition: transform .3s, box-shadow .3s, z-index 0s;
+  }
+  /* tape strip on top */
+  .page .ev::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-3deg);
+    width: 70px; height: 20px;
+    background: rgba(230,220,180,.55);
+    border: 1px solid rgba(180,160,120,.25);
+    box-shadow: 0 2px 4px rgba(0,0,0,.15);
+    z-index: 2;
+  }
+  .page .ev img {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #0a0603;
+    min-height: 100px;
+    /* fallback: broken image shows the alt text on parchment */
+    color: transparent;
+    object-fit: contain;
+  }
+  /* If the image file is missing, show a broken-image style card */
+  .page .ev img[alt]:not([src=""]) {
+    /* placeholder colors while loading / on error */
+    background:
+      repeating-linear-gradient(45deg,
+        rgba(0,0,0,.12) 0 6px,
+        rgba(0,0,0,.05) 6px 12px),
+      #2a1a0d;
+  }
+  .page .ev figcaption {
+    font-family: 'Special Elite', monospace;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #3d2611;
+    text-align: center;
+    margin-top: 10px;
+    letter-spacing: 1px;
+  }
+  /* Fallback badge shown over broken images (uses ::after on the figure) */
+  .page .ev.missing::after {
+    content: "MISSING · upload to /evidence/";
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(106,20,20,.85);
+    color: #ffdca0;
+    font-family: 'Special Elite', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 6px 10px;
+    border: 1px dashed #ffdca0;
+    z-index: 3;
+    text-align: center;
+    max-width: 80%;
+    line-height: 1.4;
+  }
+
   .page hr {
     border: none;
     height: 1px;
@@ -1111,9 +1228,34 @@ const ITEMS = [
       <p class="plain">They say he has come back. They say he has come back as the <b>BLACK SWORDSMAN</b>.</p>
       <div class="quote">"If you see a figure in black on the edge of the lobby, in the quiet between matches, do not speak to him. Do not raise a hand. He remembers every name. He is writing them down."</div>
 
-      <div class="margin-note">— filed with this chronicle, evidence #01 —<br>
-      the record survives. watch the trial with your own eyes:<br>
+      <div class="margin-note">— filed with this chronicle, evidence #00 —<br>
+      the recording of the trial itself:<br>
       <a href="https://www.youtube.com/watch?v=dIMaTb4jj4U" target="_blank" rel="noopener" style="color:#4a0808; font-family:'Special Elite', monospace; letter-spacing:2px; text-decoration:underline;">▶ THE PUMPKIN TRIAL · full recording</a></div>
+
+      <h3 class="evidence-title">— Evidence Locker —</h3>
+      <p class="plain evidence-intro">Screenshots recovered from the Cotton Candy server and adjacent group chats. The originals are pinned below.</p>
+      <div class="evidence-wall">
+        <figure class="ev">
+          <img src="evidence/e01_jenny_threats.png" alt="Jenny: I was getting called fat, saying I'm gonna get raped by hella guys">
+          <figcaption>Ev. #01 · Jenny, 01/09/2025 · the first messages she received</figcaption>
+        </figure>
+        <figure class="ev">
+          <img src="evidence/e02_gc_pileon.png" alt="Group chat pile-on with kuno and anth000">
+          <figcaption>Ev. #02 · the pile-on escalates · Christian is added to the gc</figcaption>
+        </figure>
+        <figure class="ev">
+          <img src="evidence/e03_xiskuno_admits.png" alt="xiskuno admits Christian was encouraging people to leak Isaac's face">
+          <figcaption>Ev. #03 · xiskuno: "christian was incourging ppl to leak isacc face"</figcaption>
+        </figure>
+        <figure class="ev">
+          <img src="evidence/e04_cotton_candy_leak.png" alt="Cotton Candy server, #scrim channel, leaked photos of Isaac">
+          <figcaption>Ev. #04 · Cotton Candy · #scrim channel · the leak in progress</figcaption>
+        </figure>
+        <figure class="ev">
+          <img src="evidence/e05_christian_coverup.png" alt="Christian asks people to say he didn't have the leaked material">
+          <figcaption>Ev. #05 · Christian's own words: "say i didn't had it"</figcaption>
+        </figure>
+      </div>
 
       <div class="margin-note">— written in the margin, other hand —<br>
       the bell tolls twice at &nbsp;<b>CHUR &nbsp; KRXU</b>&nbsp; · shift each letter back three in the alphabet · they knew what they meant · that is your first key</div>
@@ -1345,6 +1487,28 @@ function openPage(it) {
   inner.innerHTML = it.content;
   document.getElementById('veil').classList.add('open');
   inner.parentElement.scrollTop = 0;
+
+  // Mark missing evidence images so the "MISSING" badge shows
+  inner.querySelectorAll('.ev img').forEach(img => {
+    const flag = () => img.parentElement.classList.add('missing');
+    if (img.complete && (img.naturalWidth === 0 || img.naturalHeight === 0)) flag();
+    img.addEventListener('error', flag);
+  });
+
+  // Zoom-on-click for evidence
+  inner.querySelectorAll('.ev').forEach(fig => {
+    fig.addEventListener('click', e => {
+      const img = fig.querySelector('img');
+      if (!img || fig.classList.contains('missing')) return;
+      const src = img.getAttribute('src');
+      const overlay = document.createElement('div');
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:300;display:flex;align-items:center;justify-content:center;cursor:zoom-out;padding:20px;';
+      overlay.innerHTML = `<img src="${src}" style="max-width:96%;max-height:96%;box-shadow:0 0 60px rgba(0,0,0,.9);border:2px solid #6a1414;">`;
+      overlay.addEventListener('click', () => overlay.remove());
+      document.body.appendChild(overlay);
+      e.stopPropagation();
+    });
+  });
 }
 function closePage() {
   document.getElementById('veil').classList.remove('open');
